@@ -74,6 +74,14 @@ input{
     outline: none;
 }
 
+input:valid{
+    border-bottom: 2px solid rgb(50, 194, 50);
+}
+
+input:invalid{
+    border-bottom: 2px solid rgba(207, 39, 39, 0.932);
+}
+
 .enviar{
     margin-bottom: 5px;
     color: white;
