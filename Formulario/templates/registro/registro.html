@@ -15,7 +15,7 @@
     <div class="Registro">
       <h3>Registro de Usuario</h3>
   </div>
-  <form action="" class="form" method="get" name="Formulario">
+  <form action="/registro/registro_true" class="form" method="get" name="Formulario">
     <label for="Usuario">Tipo de usuario</label>
     <select name="Usuario" id="elusuario" class="select" required>
       <option value="">Seleccione</option>
@@ -38,13 +38,13 @@
       <option value="Tarjeta de identidad">Tarjeta de identidad</option>
     </select>
     <label for="documento">Documento de identidad:</label>
-    <input type="number" placeholder="Numero de documento de identidad" required maxlength="20" value="Documento" id="documento">
+    <input name="id" type="number" placeholder="Numero de documento de identidad" required maxlength="20" value="Documento" id="documento">
     <label for="nombre">Nombre:</label>
-    <input type="text" maxlength="45" required placeholder="Nombre..." id="nombre">
+    <input name="nombre" type="text" maxlength="45" required placeholder="Nombre..." id="nombre">
     <label for="apellidos">Apellidos:</label>
     <input type="text" name="Apellidos" required id="" placeholder="Apellidos..." id="apellidos">
     <label for="edad">Edad:</label>
-    <input type="number" minlength="1" maxlength="3" required placeholder="Edad" id="edad">
+    <input name="edad" type="number" minlength="1" maxlength="3" required placeholder="Edad" id="edad">
     <label for="Genero">Genero:</label>
     <select name="Genero" id="elgenero" name="Genero" placeholder="Genero" class="select" required> 
       <option value="">Seleccione</option>
@@ -53,11 +53,11 @@
       <option value="Otros">Otros</option>
     </select>
     <label for="email">Email:</label>
-    <input type="email" required placeholder="Email"  id="email">
+    <input name="email" type="email" required placeholder="Email"  id="email">
     <label for="con_email">Confirmar email:</label>
     <input type="text" required placeholder="Confirmar" id="con_email">
     <label for="contraseña">Contraseña</label>
-    <input type="password" required id="contraseña">
+    <input name="password" type="password" required id="contraseña">
     <label for="con_contraseña">Confirmar contraseña</label>
     <input type="password" required id="con_contraseña">
     <input type="submit" id="submit" class="enviar">
