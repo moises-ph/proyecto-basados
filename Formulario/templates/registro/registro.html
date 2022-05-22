@@ -63,6 +63,11 @@
     <input type="submit" id="submit" class="enviar">
   </form>
 </div>
+<div>
+  {% if error %}
+    <p>{{ error }}</p>
+  {% endif %}
+</div>
 <script src="index.js"></script>
 </body>
 </html>

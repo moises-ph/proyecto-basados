@@ -17,16 +17,16 @@
   <header id="cabecera">
         <h1 id="titulo" >Login</h1>
   </header>
-    <form>
+    <form name="login" method="post" action="/login_true">
 
         <!-- username -->
         <label for="usuario">Username</label>
-        <input id="Usuario_login" type="text" name="usuario" placeholder="Ingrese su usuario " value="usuario"required>
+        <input id="Usuario_login" type="text" name="usuario" placeholder="Ingrese su usuario " required>
         <p></p>
         <br>
         <!-- password -->
         <label for="Contraseña">password</label>
-        <input id="Contraseña_login"type="text" name="Contraseña" placeholder="Ingrese su Contraseña" value="Contraseña" required>
+        <input id="Contraseña_login"type="password" name="Contraseña" placeholder="Ingrese su Contraseña" required>
         <p></p>
         <br>
         <!-- ingreso-->
@@ -36,9 +36,12 @@
         <p></p>
         <a href="#"> Olvidaste tu Contraseña?</a>
         <br>
-        <a href="#"> No tienes una cuenta?</a>
-
-
+        <a href="/registro"> No tienes una cuenta?</a>
     </form>
+    <div>
+      {% if error %}
+        <p>{{ error }}</p>
+      {% endif %}
+    </div>
 </body>
 </html>

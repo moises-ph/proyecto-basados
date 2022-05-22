@@ -1,14 +1,22 @@
 from pickle import TRUE
-from flask import Flask, render_template, request
+from flask import Flask, render_template, render_template_string, request, redirect
 import pymysql
 
-def DB_con(instruccion):
-  db = pymysql.connect(host='localhost', user='root', passwd='', db='formulario')
+def DB_con_registro(instruccion):
+  db = pymysql.connect(host='localhost', user='root', passwd='mphr2015', db='formulario')
   cur = db.cursor()
   cur.execute(instruccion)
   db.commit()
   db.close()
   return True
+
+def DB_con_consulta(instruccion):
+  db = pymysql.connect(host='localhost', user='root', passwd='mphr2015', db='formulario')
+  cur = db.cursor()
+  cur.execute(instruccion)
+  resultado = cur.fetchall()
+  db.close()
+  return resultado
 
 app = Flask(__name__)
 
@@ -41,15 +49,28 @@ def registro_true():
   email =  request.form.getlist('email')[0]
   password =  request.form.getlist('password')[0]
   
-  query = "INSERT INTO registro(documento_identidad, nombres, apellidos, edad, genero, email, contraseña, tipo_de_usuario, tipo_de_documento) VALUES("+num_documento+", '"+nombre+"', '"+apellidos+"', "+edad+", '"+genero+"', '"+email+"', '"+password+"', '"+tipo_de_usuario+"', '"+tipo_de_documento+"')"
+  query = "INSERT INTO registro(id, nombres, apellidos, edad, genero, email, contraseña, tipo_de_usuario, tipo_de_documento) VALUES("+num_documento+", '"+nombre+"', '"+apellidos+"', "+edad+", '"+genero+"', '"+email+"', '"+password+"', '"+tipo_de_usuario+"', '"+tipo_de_documento+"')"
 
-  state = DB_con(query)
+  state = DB_con_registro(query)
 
   if state:
-    return render_template('/registro/registro_true.html')
+    return redirect('/login')
   else:
-    return render_template('/registro/registro_false.html')
+    return render_template('/registro/registro.html', error = 'Error al registrar')
   
+@app.route('/login_true', methods=['POST'])
+def login_true():
+  usuario = request.form.getlist('usuario')[0]
+  password = request.form.getlist('Contraseña')[0]
+  print(usuario + " " + password)
+  query = "SELECT (contraseña) FROM registro WHERE nombres = '" + usuario + "';"
+  state = DB_con_consulta(query)
+  
+  if state[0][0] == password:
+    return redirect('/dashboard')
+  else:
+    return render_template('/Login/login.html', error = "Usuario o contraseña incorrectos")
+
 
 
 
