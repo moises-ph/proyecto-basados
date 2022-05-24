@@ -15,7 +15,7 @@
     <div class="Registro">
       <h3>Registro de Usuario</h3>
   </div>
-  <form action="/registro_true" class="form" method="post" name="Formulario">
+  <form action="/registro" class="form" method="post" name="Formulario">
     <label for="Usuario">Tipo de usuario</label>
     <select name="usuario" id="elusuario" class="select" required>
       <option value="">Seleccione</option>
@@ -64,8 +64,8 @@
   </form>
 </div>
 <div>
-  {% if error %}
-    <p>{{ error }}</p>
+  {% if state %}
+    <p>{{ state }}</p>
   {% endif %}
 </div>
 <script src="index.js"></script>
