@@ -1,5 +1,6 @@
 *{
     font-family: 'Noto Sans', sans-serif;
+    user-select: none;
 }
 
 body{
@@ -32,6 +33,7 @@ body{
     background-color: #6A33A1;
     width: 100%;
     border-radius: 5px;
+    outline: none;
 }
 
 .Registro{
@@ -91,4 +93,8 @@ input:invalid{
 
 .enviar:hover{
     background-color: #15152c;
+}
+
+.error{
+    visibility: hidden;
 }

@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulario de datos basicos</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="datos_basicos.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300&display=swap" rel="stylesheet">
@@ -13,24 +13,24 @@
 <body>
   <h1>Datos básicos</h1>
   <form class="formulario" name="Formulario-datosbasicos-lgd" action="" method="get">
-
+    <div class="reform">
     <label for="nombre-lock">Nombre: 
-      <input id="nombre-lock" value="Nombre" type="text" placeholder="Nombre" disabled>
+      <input id="nombre-lock" value="Nombre" type="text" placeholder="Nombre" class="input" required disabled>
     </label>
     <label for="apellidos-lock">Apellidos: 
-      <input id="apellidos-lock" value="Apellidos" type="text" placeholder="Apellidos" disabled>
+      <input id="apellidos-lock" value="Apellidos" type="text" placeholder="Apellidos" class="input" required disabled>
     </label>
 
     <label for="fecha-nacimiento">Fecha de nacimiento: 
-      <input type="date" name="fechaNacimiento" id="fecha-nacimiento">
+      <input type="date" name="fechaNacimiento" class="input" required id="fecha-nacimiento">
     </label>
 
     <label for="genero">Genero: 
-      <input type="text" name="genero" id="genero" disabled>
+      <input type="text" name="genero" id="genero" class="input" disabled>
     </label>
 
     <label >Documento de Identidad:
-      <select name="Tipo_documento" id="">
+      <select name="Tipo_documento" id="" required>
         <option value="Seleccione">Seleccione</option>
         <option value="C.C">C.C</option>
         <option value="Carnet diplomatico">Carnet diplomatico</option>   
@@ -44,31 +44,31 @@
         <option value="Salvoconducto">Salvoconducto</option>
         <option value="Tarjeta de identidad">Tarjeta de identidad</option>
       </select>
-      <input type="number" placeholder="Numero de documento de identidad" maxlength="10" value="Documento">
+      <input type="number" placeholder="Numero de documento de identidad" class="input" required maxlength="10" value="Documento">
     </label>
 
     <label>Telefono:
-      <input name="Telefono" type="number" placeholder="Telefono" maxlength="10">
+      <input name="Telefono" type="number" class="input" placeholder="Telefono" required maxlength="10">
     </label>
 
     <label>Telefono Celular: 
-      <input name="celular" type="number" placeholder="Celular" maxlength="10">
+      <input name="celular" type="number" class="input" placeholder="Celular" required maxlength="10">
     </label>
 
     <label>Dirección: 
-      <input type="text" placeholder="Dirección" name="Dirección">
+      <input type="text" placeholder="Dirección" class="input" required name="Dirección">
     </label>
 
     <label>Departamento:
-      <input type="text" placeholder="Departamento" name="Departamento">
+      <input type="text" placeholder="Departamento" class="input" required name="Departamento">
     </label>
 
     <label>Ciudad:
-      <input type="text" placeholder="Ciudad" name="Ciudad">
+      <input type="text" placeholder="Ciudad" class="input" required name="Ciudad">
     </label>
 
     <label>Estado Civil:
-      <select name="EstadoCivil" id="estado-civil" required>
+      <select name="EstadoCivil" id="estado-civil"  required required>
         <option value="Seleccione" disabled>Seleccione</option>
         <option value="Soltero">Soltero</option>
         <option value="Casado">Casado</option>
@@ -78,7 +78,7 @@
     </label>
 
     <label >Estrato Socioeconómico:
-      <select name="estrato" id="estrato" required>
+      <select name="estrato" id="estrato" required required>
         <option value="Seleccione" disabled>Seleccione</option>
         <option value="1">1</option>
         <option value="2">2</option>
@@ -90,7 +90,7 @@
     </label>
 
     <label >Ocupación:
-      <select name="ocupacion" id="ocupacion" required>
+      <select name="ocupacion" id="ocupacion" required required>
         <option value="Seleccione" disabled>Seleccione</option>
         <option value="Estudiante">Estudiante</option>
         <option value="Empleado">Empleado</option>
@@ -102,7 +102,7 @@
     </label>
 
     <label name="regimen-perteneciente">Régimen Perteneciente:
-      <select name="regimenPerteneciente" id="">
+      <select name="regimenPerteneciente" required id="">
         <option value="Subsidiado">Subsidiado</option>
         <option value="Contributivo">Contributivo</option>
         <option value="Independiente">Independiente</option>
@@ -110,7 +110,7 @@
     </label>
 
     <label>Historial Clínico:
-      <select name="tiempo-historial">
+      <select name="tiempo-historial" required>
         <option value="Seleccione" disabled>Seleccione</option>
         <option value="Menos de un mes">Menos de un mes</option>
         <option value="1-2 Meses">1-2 Meses</option>
@@ -119,25 +119,26 @@
         <option value="1-2 Años">1-2 Años</option>
         <option value="Mas de 2 Años">Más de 2 Años</option>
       </select>
-      <select name="evento-historial-clinico">
+      <select name="evento-historial-clinico" required>
         <option value="Seleccione" disabled>Seleccione</option>
         <option value="Consulta con especialista">Consulta con especialista</option>
         <option value="Urgencia">Urgencia</option>
       </select>
-      <textarea name="historialClinico" id="" cols="30" rows="10" placeholder="Descripcion del motivo"></textarea>
+    </div>
+      <textarea name="historialClinico"  required id="" cols="30" rows="10" placeholder="Descripcion del motivo"></textarea>
     </label>
-
-    <label for="email">Email: 
-      <input type="email" placeholder="Email" name="email" id="email">
-      <input type="email" placeholder="Confirmar Email" name="email_con" id="email-con">
-    </label>
-    
-    <label for="contraseña">Contraseña: 
-      <input type="password" placeholder="Contraseña" name="contraseña" id="contraseña">
-      <input type="password" placeholder="Confirmar Contraseña" name="contraseña_con" id="contraseña-con">
-    </label>
-
-    <input type="submit" value="Guardar">
+    <div class="reform">
+      <label for="email">Email: 
+        <input type="email" placeholder="Email" class="input" required name="email" id="email">
+        <input type="email" placeholder="Confirmar Email" class="input" required name="email_con" id="email-con">
+      </label>
+      
+      <label for="contraseña">Contraseña: 
+        <input type="password" placeholder="Contraseña" class="input" required name="contraseña" id="contraseña">
+        <input type="password" placeholder="Confirmar Contraseña" class="input" required name="contraseña_con" id="contraseña-con">
+      </label>
+    </div>
+    <input type="submit" class="submit" value="Guardar">
   </form>
 </body>
 </html>
