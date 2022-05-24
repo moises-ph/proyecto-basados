@@ -95,7 +95,7 @@ def dashboard():
     motivo = request.form.getlist('evento-historial-clinico')[0]
     descripcion = request.form.getlist('descripcion-historialClinico')[0]
 
-    
+    query = "INSERT INTO datos_usuario()"
   
   else :
     return render_template('/dashboard/dashboard.html')
