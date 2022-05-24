@@ -22,7 +22,7 @@
     </label>
 
     <label for="fecha-nacimiento">Fecha de nacimiento: 
-      <input type="date" name="fechaNacimiento" class="input" required id="fecha-nacimiento">
+      <input onchange="obtenerFecha(this)" type="date" name="fechaNacimiento" id="fecha-nacimiento">
     </label>
 
     <label for="genero">Genero: 
@@ -44,7 +44,7 @@
         <option value="Salvoconducto">Salvoconducto</option>
         <option value="Tarjeta de identidad">Tarjeta de identidad</option>
       </select>
-      <input type="number" placeholder="Numero de documento de identidad" class="input" required maxlength="10" value="Documento">
+      <input type="number" placeholder="Numero de documento de identidad" maxlength="10" value="Documento" disabled>
     </label>
 
     <label>Telefono:
@@ -110,8 +110,8 @@
     </label>
 
     <label>Historial Clínico:
-      <select name="tiempo-historial" required>
-        <option value="Seleccione" disabled>Seleccione</option>
+      <select name="tiempo-historial">
+        <option value="Seleccione">--- Seleccione ---</option>
         <option value="Menos de un mes">Menos de un mes</option>
         <option value="1-2 Meses">1-2 Meses</option>
         <option value="Menos de 6 meses">Menos de 6 meses</option>
@@ -124,8 +124,7 @@
         <option value="Consulta con especialista">Consulta con especialista</option>
         <option value="Urgencia">Urgencia</option>
       </select>
-    </div>
-      <textarea name="historialClinico"  required id="" cols="30" rows="10" placeholder="Descripcion del motivo"></textarea>
+      <textarea name="descripcion-historialClinico" id="" cols="30" rows="10" placeholder="Descripcion del motivo"></textarea>
     </label>
     <div class="reform">
       <label for="email">Email: 
@@ -140,5 +139,11 @@
     </div>
     <input type="submit" class="submit" value="Guardar">
   </form>
+  <script>
+    function obtenerFecha(e){
+      var fecha = e.value;
+      console.log(fecha);
+    }
+  </script>
 </body>
 </html>
