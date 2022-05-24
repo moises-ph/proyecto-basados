@@ -4,7 +4,7 @@ from flask import Flask, render_template, render_template_string, request, redir
 import pymysql
 
 def DB_con_registro(instruccion):
-  db = pymysql.connect(host='localhost', user='2448515', passwd='mphr2015', db='registro_bd')
+  db = pymysql.connect(host='localhost', user='root', passwd='mphr2015', db='registro_BD')
   cur = db.cursor()
   cur.execute(instruccion)
   db.commit()
@@ -12,7 +12,7 @@ def DB_con_registro(instruccion):
   return True
 
 def DB_con_consulta(instruccion):
-  db = pymysql.connect(host='localhost', user='2448515', passwd='mphr2015', db='registro_bd')
+  db = pymysql.connect(host='localhost', user='root', passwd='mphr2015', db='registro_BD')
   cur = db.cursor()
   cur.execute(instruccion)
   resultado = cur.fetchall()
@@ -25,6 +25,8 @@ app = Flask(__name__)
 
 def template():
   return render_template('index.html')
+
+''' LOGIN '''
 
 @app.route('/login', methods=['GET', 'POST'])
 
@@ -44,8 +46,13 @@ def login():
   else :
     return render_template('/Login/login.html')
 
+
+'''REGISTRO'''
+
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
+  state = ''
+  query = ''
   if request.method == 'POST':
     print(request.form.getlist('usuario')[0])
     tipo_de_usuario = request.form.getlist('usuario')[0] 
@@ -57,19 +64,26 @@ def registro():
     genero =  request.form.getlist('Genero')[0]
     email =  request.form.getlist('email')[0]
     password =  request.form.getlist('password')[0]
-    
-    query = "INSERT INTO registro(C_C, nombres, apellidos, edad, genero, email, contraseña, tipo_de_usuario, tipo_de_documento) VALUES("+num_documento+", '"+nombre+"', '"+apellidos+"', "+edad+", '"+genero+"', '"+email+"', '"+password+"', '"+tipo_de_usuario+"', '"+tipo_de_documento+"')"
 
-    state = DB_con_registro(query)
-
+    query = "SELECT * FROM registro WHERE C_C = " + num_documento + ";"
+    state = DB_con_consulta(query)
+    print(state)
     if state:
-      return render_template('/registro/registro.html', state = 'Registro exitoso')
+      return render_template('/registro/registro.html', error = "Usuario ya existe")
     else:
-      return render_template('/registro/registro.html', state = 'Error al registrar')
+      query = "INSERT INTO registro(C_C, nombres, apellidos, edad, genero, email, contraseña, tipo_de_usuario, tipo_de_documento) VALUES("+num_documento+", '"+nombre+"', '"+apellidos+"', "+edad+", '"+genero+"', '"+email+"', '"+password+"', '"+tipo_de_usuario+"', '"+tipo_de_documento+"')"
+
+      state = DB_con_registro(query)
+
+      if state:
+        return render_template('/registro/registro.html', state = 'Registro exitoso')
+      else:
+        return render_template('/registro/registro.html', state = 'Error al registrar')
   
   else :
     return render_template('/registro/registro.html')
 
+'''DASHBOARD'''
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
@@ -98,7 +112,11 @@ def dashboard():
     query = "INSERT INTO datos_usuario()"
   
   else :
-    return render_template('/dashboard/dashboard.html')
+    return render_template('/Dashboard/dashboard.html')
 
+
+
+
+'''EJECUCION'''
 if __name__ == '__main__':
   app.run(debug=True)

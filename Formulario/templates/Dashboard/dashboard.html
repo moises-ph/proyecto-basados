@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulario de datos basicos</title>
-  <link rel="stylesheet" href="datos_basicos.css">
+  <link rel="stylesheet" href="{{url_for('static', filename = 'dashboard/datos_basicos.css')}}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300&display=swap" rel="stylesheet">
@@ -22,7 +22,11 @@
     </label>
 
     <label for="fecha-nacimiento">Fecha de nacimiento: 
-      <input onchange="obtenerFecha(this)" type="date" name="fechaNacimiento" id="fecha-nacimiento">
+      <input type="date" name="fechaNacimiento" id="fecha-nacimiento">
+    </label>
+
+    <label for="edad-act">Edad:
+      <input type="number" name="edad-act" id="edad-act">
     </label>
 
     <label for="genero">Genero: 
@@ -139,11 +143,5 @@
     </div>
     <input type="submit" class="submit" value="Guardar">
   </form>
-  <script>
-    function obtenerFecha(e){
-      var fecha = e.value;
-      console.log(fecha);
-    }
-  </script>
 </body>
 </html>

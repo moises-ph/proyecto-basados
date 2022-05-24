@@ -38,10 +38,9 @@
         <br>
         <a href="/registro"> No tienes una cuenta?</a>
     </form>
-    <div>
-      {% if error %}
+    {% if error %}
         <p>{{ error }}</p>
-      {% endif %}
-    </div>
+    {% endif %}
+    <script src="{{url_for('static', filename='login/login_sc.js')}}"></script>
 </body>
 </html>

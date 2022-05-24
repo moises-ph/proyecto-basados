@@ -8,14 +8,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="{{url_for('static', filename='registro/style.css')}}">
 </head>
 <body>
 	<div class="formulario">
     <div class="Registro">
       <h3>Registro de Usuario</h3>
   </div>
-  <form action="/registro" class="form" method="post" name="Formulario">
+  <form action="/registro" class="form" id="formulario-registro" method="post" name="Formulario">
     <label for="Usuario">Tipo de usuario</label>
     <select name="usuario" id="elusuario" class="select" required>
       <option value="">Seleccione</option>
@@ -38,7 +38,7 @@
       <option value="Tarjeta de identidad">Tarjeta de identidad</option>
     </select>
     <label for="documento">Documento de identidad:</label>
-    <input name="id" type="number" placeholder="Numero de documento de identidad" required maxlength="20" value="Documento" id="documento">
+    <input name="id" type="number" placeholder="Numero de documento de identidad" required maxlength="20" id="documento">
     <label for="nombre">Nombre:</label>
     <input name="nombre" type="text" maxlength="45" required placeholder="Nombre..." id="nombre">
     <label for="apellidos">Apellidos:</label>
@@ -55,19 +55,22 @@
     <label for="email">Email:</label>
     <input name="email" type="email" required placeholder="Email"  id="email">
     <label for="con_email">Confirmar email:</label>
-    <input type="text" required placeholder="Confirmar" id="con_email">
+    <input type="text" type="email" required placeholder="Confirmar" id="con_email">
     <label for="contraseña">Contraseña</label>
-    <input name="password" type="password" required id="contraseña">
+    <input name="password" type="password" required id="contraseña_org">
     <label for="con_contraseña">Confirmar contraseña</label>
-    <input type="password" required id="con_contraseña">
+    <input type="password" required id="confirmacion_contraseña">
     <input type="submit" id="submit" class="enviar">
   </form>
+  <a href="/login">Ya te registraste? Inicia sesión aquí</a>
 </div>
 <div>
   {% if state %}
-    <p>{{ state }}</p>
+    <p>{{ state }}, <a href="/login">Iniciar Sesión</a></p>
+  {% elif error %}
+    <p>{{ error }}, <a href="/registro">Volver a intentarlo</a></p>
   {% endif %}
 </div>
-<script src="index.js"></script>
+<script src="{{url_for('static', filename='registro/registro_sc.js')}}"></script>
 </body>
 </html>
