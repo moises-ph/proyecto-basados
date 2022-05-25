@@ -5,42 +5,39 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>login</title>
-  <style>
-      *{
-        text-align: center;
-      }
-  </style>
-
-<!-- ______ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{url_for('static', filename='login/login.css')}}">
 </head>
 <body>
-  <header id="cabecera">
-        <h1 id="titulo" >Login</h1>
-  </header>
-    <form name="login" method="post" action="/login">
+    <div class="formulario">
+        <header id="cabecera">
+                <h1 id="titulo" >Login</h1>
+        </header>
+        <form name="login" method="post" action="/login" class="form">
 
-        <!-- username -->
-        <label for="documento_id">Documento de identidad</label>
-        <input id="Usuario_login" type="text" name="documento_id" placeholder="Ingrese su documento de identidad " required>
-        <p></p>
-        <br>
-        <!-- password -->
-        <label for="Contraseña">password</label>
-        <input id="Contraseña_login"type="password" name="Contraseña" placeholder="Ingrese su Contraseña" required>
-        <p></p>
-        <br>
-        <!-- ingreso-->
-        <input type="submit" value="Ingresar" >
-        <p></p>
-        <br>
-        <p></p>
-        <a href="#"> Olvidaste tu Contraseña?</a>
-        <br>
-        <a href="/registro"> No tienes una cuenta?</a>
-    </form>
-    {% if error %}
-        <p>{{ error }}</p>
-    {% endif %}
+            <!-- username -->
+            <label for="documento_id">Documento de identidad</label>
+            <input id="Usuario_login" class="input" type="text" name="documento_id" placeholder="Ingrese su documento de identidad " required>
+            
+            <!-- password -->
+            <label for="Contraseña">password</label>
+            <input id="Contraseña_login" class="input" type="password" name="Contraseña" placeholder="Ingrese su Contraseña" required>
+
+            <!-- ingreso-->
+            <input type="submit" value="Ingresar" class="submit" >
+            
+            <a href="#" class="link"> Olvidaste tu Contraseña?</a>
+
+            <a href="/registro" class="link"> No tienes una cuenta?</a>
+        </form>
+    </div>
+    <div class="error">
+        {% if error %}
+            <p>{{ error }}</p>
+        {% endif %}
+    </div>
     <script src="{{url_for('static', filename='login/login_sc.js')}}"></script>
 </body>
 </html>
