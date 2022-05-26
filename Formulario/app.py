@@ -17,7 +17,10 @@ def DB_con_consulta(instruccion):
   cur.execute(instruccion)
   resultado = cur.fetchall()
   db.close()
-  return resultado
+  if resultado:
+    return resultado
+  else:
+    return False
 
 app = Flask(__name__)
 
@@ -54,7 +57,6 @@ def registro():
   state = ''
   query = ''
   if request.method == 'POST':
-    print(request.form.getlist('usuario')[0])
     tipo_de_usuario = request.form.getlist('usuario')[0] 
     tipo_de_documento = request.form.getlist('Tipo_documento')[0]
     num_documento = request.form.getlist('id')[0]
@@ -65,21 +67,33 @@ def registro():
     email =  request.form.getlist('email')[0]
     password =  request.form.getlist('password')[0]
 
+    print(num_documento)
+
     query = "SELECT * FROM registro WHERE C_C = " + num_documento + ";"
     state = DB_con_consulta(query)
-    print(state)
-    if state:
+    print(state[0][0])
+    '''Error de usuario ya registrado'''
+    num_id_existe = state[0][0] 
+    '''Error de consulta'''
+    if num_id_existe == num_documento:
+      print("ya existe")
       return render_template('/registro/registro.html', error = "Usuario ya existe")
-    else:
+    else :
+      print("no existe")
       query = "INSERT INTO registro(C_C, nombres, apellidos, edad, genero, email, contraseña, tipo_de_usuario, tipo_de_documento) VALUES("+num_documento+", '"+nombre+"', '"+apellidos+"', "+edad+", '"+genero+"', '"+email+"', '"+password+"', '"+tipo_de_usuario+"', '"+tipo_de_documento+"')"
 
       state = DB_con_registro(query)
 
-      if state:
+      query = "INSERT INTO datos_usuario(C_C) VALUES("+num_documento+")"
+
+      state2 = DB_con_registro(query)
+
+      if state == True and state2 == True:
         return render_template('/registro/registro.html', state = 'Registro exitoso')
       else:
+        print(state + "\n" + state2)
         return render_template('/registro/registro.html', state = 'Error al registrar')
-  
+
   else :
     return render_template('/registro/registro.html')
 
