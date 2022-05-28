@@ -55,6 +55,7 @@ app.post('/login', (req, res) => {
         var resultado = rows;
         console.log(resultado);
         if(resultado[0].contraseña == password){
+          res.redirect('/dashboard');
           res.sendStatus(200);
           console.log('Contraseña correcta, redireccionando a la pagina principal');
         }
@@ -66,7 +67,6 @@ app.post('/login', (req, res) => {
       }
     })
   })
-  res.redirect(200, '/dashboard');
 })
 
 // REGISTRO
