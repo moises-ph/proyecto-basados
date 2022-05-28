@@ -42,13 +42,13 @@
       <option value="Otros">Otros</option>
     </select>
     <label for="email">Email:</label>
-    <input name="email" type="email" required placeholder="Email"  id="email">
+    <input name="email" type="email" required placeholder="Email" onchange="guardar_email_org(this)" id="email">
     <label for="con_email">Confirmar email:</label>
-    <input type="text" type="email" required placeholder="Confirmar" id="con_email">
+    <input type="text" type="email" required placeholder="Confirmar" onchange="guardar_email_con(this)" id="con_email">
     <label for="contraseña">Contraseña</label>
-    <input name="password" type="password" required id="contraseña_org">
+    <input name="password" type="password" onchange="guardar_pssword_org(this)" required id="contraseña_org">
     <label for="con_contraseña">Confirmar contraseña</label>
-    <input type="password" required id="confirmacion_contraseña">
+    <input type="password" onchange="guardar_pssword_con(this)" required id="confirmacion_contraseña">
     <input type="submit" id="submit" class="enviar">
   </form>
   <a href="/login">Ya te registraste? Inicia sesión aquí</a>

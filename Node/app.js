@@ -10,7 +10,7 @@ const db =  mysql.createPool({
   connectionLimit: 100,
   host: 'localhost',
   user: 'root',
-  password: 'root',
+  password: 'mphr2015',
   database: 'registro_BD',
   port : 3306
 });
@@ -43,7 +43,7 @@ app.post('/login', (req, res) => {
   const id_usuario = parseInt(req.body.documento_id);
   const password = req.body.Contraseña;
 
-  let sql_search = `SELECT (contraseña) FROM registro WHERE num_documento = ${id_usuario};`;
+  let sql_search = `SELECT * FROM registro WHERE num_documento = ${id_usuario};`;
   
   let query = mysql.format(sql_search);
   console.log(query);
@@ -56,14 +56,16 @@ app.post('/login', (req, res) => {
         console.log(resultado);
         if(resultado[0].contraseña == password){
           res.redirect('/dashboard');
-          res.sendStatus(200);
           console.log('Contraseña correcta, redireccionando a la pagina principal');
         }
         else{
-          res.sendStatus(404);
           res.render('login', {error : 'Contraseña incorrecta', mensaje: ''});
           console.log('Contraseña incorrecta');
         }
+      }
+      else {
+        res.render('login', {error : 'Usuario no registrado', mensaje: ''});
+        console.log('Usuario no registrado');
       }
     })
   })
@@ -96,7 +98,7 @@ app.post('/registro', (req, res) => {
     const sql_insert = "INSERT INTO registro(num_documento, nombres, apellidos, edad, genero, email, contraseña, tipo_de_usuario, tipo_de_documento) VALUES (?,?,?,?,?,?,?,?,?);"
     const query_sql = mysql.format(sql_insert, [documento, nombre, apellidos, edad, genero, email, contraseña, tipo_usuario, tipo_documento]);
 
-    await connection.query( search_sql,async  (err, result) => {
+    connection.query( search_sql,async  (err, result) => {
       if (err) throw err;
       if (result.length > 0) {
         console.log('Usuario ya registrado');
@@ -121,7 +123,7 @@ app.get('/dashboard', (req, res) => {
 
 // 404
 app.use((req, res, next) => {
-  res.status(404).render("404", { titulo: "Página 404" });
+  res.status(404).render("404", {url : req.url});
 });
 
 // SET UP SERVER

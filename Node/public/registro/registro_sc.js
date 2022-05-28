@@ -1,49 +1,50 @@
-const form = document.getElementById('formulario-registro');
+var email_con = '';
+var email_org = '';
+var password_org = '';
+var password_con = '';
 
-function validacion_same(valor1, valor2){
-    if(valor1 !== valor2){
-        console.log('No coinciden');
-        return false;
-    }else{
-        return true;
-    }
+function guardar_email_org(email){
+    console.log('email_org: ' + email.value);
+    email_org = email.value;
 }
 
-form.addEventListener('submit', e => {
-    console.log('Validando formulario');
-    let contraseña_org = document.getElementById('contraseña_org');
-    let con_contraseña = document.getElementById('confirmacion_contraseña_org');
-    let email = document.getElementById('email');
-    let con_email = document.getElementById('con_email');
+function guardar_email_con(email){
+    console.log('email_con: ' + email.value);
+    email_con = email.value;
+}
 
-    let EMAIL = validacion_same(email.value, con_email.value);
-    let CONTRASEÑA = validacion_same(contraseña_org.value, con_contraseña.value);
+function guardar_pssword_org(password){
+    console.log('password_org: ' + password.value);
+    password_org = password.value;
+}
 
-    if(!EMAIL && !CONTRASEÑA){
-        console.log('No coinciden (ambos)');
-        e.preventDefault();
-        email.setCustomValidity('Los emails no coinciden');
-        con_email.setCustomValidity('Los emails no coinciden');
-        contraseña_org.setCustomValidity('Las contraseñas no coinciden');
-        con_contraseña.setCustomValidity('Las contraseñas no coinciden');
+function guardar_pssword_con(password){
+    console.log('password_con: ' + password.value);
+    password_con = password.value;
+}
+
+document.getElementById('submit').addEventListener('click', (e) => {
+    console.log(e);
+    console.log('click');
+    e.preventDefault();
+    if (email_org != email_con && password_org != password_con){
+        console.log('Los datos no coinciden');
+        alert('Los correos electrónicos y las contraseñas no coinciden');
+        return false;
     }
-    else if (!EMAIL){
-        console.log('No coinciden (email)');
-        e.preventDefault();
-        email.setCustomValidity('Los emails no coinciden');
-        con_email.setCustomValidity('Los emails no coinciden');
+    else if (email_org != email_con){
+        console.log('Los correos no coinciden');
+        alert('Los correos electrónicos no coinciden');
+        return false;
     }
-    else if(!CONTRASEÑA){
-        console.log('No coinciden (contraseña)');
-        e.preventDefault();
-        contraseña_org.setCustomValidity('Las contraseñas no coinciden');
-        con_contraseña.setCustomValidity('Las contraseñas no coinciden');
+    else if (password_org != password_con){
+        console.log('Las contraseñass no coinciden');
+        alert('Las contraseñas no coinciden');
+        return false;
     }
-    else if (EMAIL && CONTRASEÑA){
-        console.log('Formulario validado');
-        email.setCustomValidity('');
-        con_email.setCustomValidity('');
-        contraseña_org.setCustomValidity('');
-        con_contraseña.setCustomValidity('');
+    else {
+        document.getElementById('formulario-registro').requestSubmit();
+        console.log('Los datos coinciden');
+        return true;
     }
 });

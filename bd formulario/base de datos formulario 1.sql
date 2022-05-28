@@ -39,8 +39,6 @@ create table acciones(
                     accion varchar(100) not null,
                     fecha datetime not null default current_timestamp);
                     
-insert into registro() values (2, "moises", 'pineda', 17, 'Hombre', "mois.mp8@gmail.com", '123456', 'paciente', 'T.I');
-SELECT num_documento from registro where num_documento = 2;
 
 DELIMITER //
 create trigger log_registro after insert on registro
@@ -50,4 +48,3 @@ for each row begin
 end //
 delimiter ;
 
-drop trigger log_registro;
