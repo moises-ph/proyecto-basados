@@ -39,7 +39,7 @@ app.get('/login', (req, res) => {
 })
 
 app.post('/login', (req, res) => {
-  console.log(req);
+  console.log('POST /login');
   const id_usuario = parseInt(req.body.documento_id);
   const password = req.body.Contraseña;
 
@@ -98,7 +98,7 @@ app.post('/registro', (req, res) => {
     const sql_insert = "INSERT INTO registro(num_documento, nombres, apellidos, edad, genero, email, contraseña, tipo_de_usuario, tipo_de_documento) VALUES (?,?,?,?,?,?,?,?,?);"
     const query_sql = mysql.format(sql_insert, [documento, nombre, apellidos, edad, genero, email, contraseña, tipo_usuario, tipo_documento]);
 
-    connection.query( search_sql,async  (err, result) => {
+    await connection.query( search_sql,async  (err, result) => {
       if (err) throw err;
       if (result.length > 0) {
         console.log('Usuario ya registrado');
@@ -109,6 +109,20 @@ app.post('/registro', (req, res) => {
           if (err) throw err;
           console.log('Usuario registrado');
           res.render('registro', {error : '', mensaje: 'Usuario registrado'});
+        })
+
+        let sql_datos_basicos = 'INSERT INTO datos_usuario(num_documento, telefono, direccion, departamento, ciudad, Estado_civil, Estrato_economico, Ocupacion, Regimen_Perteneciente, fecha_de_nacimiento) values (?,?,?,?,?,?,?,?,?,?);';
+        let query_datos_basicos = mysql.format(sql_datos_basicos, [documento, 0, '', '', '', '', 0, '', '', '2000-01-01']);
+        await connection.query(query_datos_basicos, (err, result) => {
+          if (err) throw err;
+          console.log('Datos basicos registrados');
+        })
+        
+        let sql_historia = "INSERT INTO historia_clinica(num_documento, Tiempo_historial, evento_historial, descripcion_historial) VALUES (?,?,?,?);"
+        let query_historia = mysql.format(sql_historia, [documento, '', '', '']);
+        await connection.query(query_historia, (err, result) => {
+          if (err) throw err;
+          console.log('Historia clinica registrada');
         })
       }
     })

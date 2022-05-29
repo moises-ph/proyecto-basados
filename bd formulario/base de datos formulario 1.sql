@@ -22,7 +22,7 @@ create table datos_usuario (num_documento int primary key,
                             Estrato_economico int(1) not null,
                             Ocupacion varchar(30) not null,
                             Regimen_Perteneciente varchar(50) not null,
-							fecha_de_nacimiento varchar (50) not null,
+							fecha_de_nacimiento date not null,
                             constraint fk_registro_datos_usuario foreign key (num_documento) references registro(num_documento)
                             );
 
