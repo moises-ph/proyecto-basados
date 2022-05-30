@@ -53,15 +53,25 @@
   </form>
   <a href="/login">Ya te registraste? Inicia sesión aquí</a>
 </div>
-<% if (error) { %>
-  <div class="error">
-    <p>Error: <%= error %></p>
-  </div>
-<% } %>
-<% if (mensaje) { %>
-  <div class="mensaje">
-    <p><%= mensaje %> </p>
-  </div>
-<% } %>
+<div id="error"><%= error %></div>
+<div id="mensaje"><%= mensaje %></div>
+  <% if (error == '' && mensaje == '') { %>
+    <script>
+      document.getElementById("error").style.display = "none";
+      document.getElementById("mensaje").style.display = "none";
+    </script>
+  <% } %>
+  <% if (error != '') { %>
+    <script>
+      document.getElementById("error").style.display = "block";
+      document.getElementById("mensaje").style.display = "none";
+    </script>
+  <% } %>
+  <% if (mensaje != '') { %>
+    <script>
+      document.getElementById("error").style.display = "none";
+      document.getElementById("mensaje").style.display = "block";
+    </script>
+  <% } %>
 
 <%- include('template/footer', {script : '/registro/registro_sc.js'}) %>
