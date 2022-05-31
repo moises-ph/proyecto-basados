@@ -14,7 +14,7 @@
     </label>
 
     <label for="edad-act">Edad:
-      <input type="number" name="edad-act" id="edad-act">
+      <input type="number" name="edad-act" id="edad-act" disabled>
     </label>
 
     <label for="genero">Genero: 
@@ -36,7 +36,7 @@
         <option value="Salvoconducto">Salvoconducto</option>
         <option value="Tarjeta de identidad">Tarjeta de identidad</option>
       </select>
-      <input type="number" placeholder="Numero de documento de identidad" maxlength="10" value="Documento" disabled>
+      <input type="number" placeholder="Numero de documento de identidad" maxlength="10" id='documento-id' value="Documento" disabled>
     </label>
 
     <label>Telefono:
@@ -101,23 +101,6 @@
       </select>
     </label>
 
-    <label>Historial Clínico:
-      <select name="tiempo-historial">
-        <option value="Seleccione">--- Seleccione ---</option>
-        <option value="Menos de un mes">Menos de un mes</option>
-        <option value="1-2 Meses">1-2 Meses</option>
-        <option value="Menos de 6 meses">Menos de 6 meses</option>
-        <option value="6-12 Meses">6-12 Meses</option>
-        <option value="1-2 Años">1-2 Años</option>
-        <option value="Mas de 2 Años">Más de 2 Años</option>
-      </select>
-      <select name="evento-historial-clinico" required>
-        <option value="Seleccione" disabled>Seleccione</option>
-        <option value="Consulta con especialista">Consulta con especialista</option>
-        <option value="Urgencia">Urgencia</option>
-      </select>
-      <textarea name="descripcion-historialClinico" id="" cols="30" rows="10" placeholder="Descripcion del motivo"></textarea>
-    </label>
     <div class="reform">
       <label for="email">Email: 
         <input type="email" placeholder="Email" class="input" required name="email" id="email">

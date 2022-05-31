@@ -26,12 +26,6 @@ create table datos_usuario (num_documento int primary key,
                             constraint fk_registro_datos_usuario foreign key (num_documento) references registro(num_documento)
                             );
 
-create table historia_clinica ( num_documento int primary key auto_increment,
-								Tiempo_historial varchar(50)not null,
-                                evento_historial varchar(50) not null,
-                                descripcion_historial text(255) not null,
-                                constraint fk_datos_usuario_historia_clinica foreign key (num_documento) references registro(num_documento));
-                                
 create table acciones(
 					id int not null primary key auto_increment,
                     usuario varchar(40) not null,

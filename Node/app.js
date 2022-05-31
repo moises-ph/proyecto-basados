@@ -1,7 +1,9 @@
 const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
-const redirect = require('express-redirect');
+const fs = require('fs');
+const { errorMonitor } = require('events');
+const { log } = require('console');
 
 const app = express();
 const port = 3000 || process.env.PORT;
@@ -55,6 +57,21 @@ app.post('/login', (req, res) => {
         var resultado = rows;
         console.log(resultado);
         if(resultado[0].contraseña == password){
+
+          let data_temp = {
+            'id' : id_usuario,
+            'estado' : 'activo'
+          }
+          let data = JSON.stringify(data_temp);
+          fs.writeFileSync('data/datos_sesion.json', data, (error)=>{
+            if(error){
+              console.log(error);
+            }
+            else{
+              console.log('Archivo creado');
+            }
+          });
+
           res.redirect('/dashboard');
           console.log('Contraseña correcta, redireccionando a la pagina principal');
         }
@@ -132,8 +149,73 @@ app.post('/registro', (req, res) => {
 // DASHBOARD
 
 app.get('/dashboard', (req, res) => {
+  console.log('GET /dashboard');
+
+  let nombre, apellido, edad, genero;
+
+  let data = fs.readFileSync('data/datos_sesion.json');
+  let data_json = JSON.parse(data);
+  console.log(data_json);
+  let id = data_json.id;
+
+  let query = "SELECT nombres, apellidos, edad, genero FROM registro WHERE num_documento = ?;"
+  let sql_search = mysql.format(query, [id]);
+
+  db.getConnection((err, connection) => {
+    if (err) throw err;
+    connection.query(sql_search, (err, rows) => {
+      if (err) throw err;
+      if (rows.length > 0) {
+        nombre = rows[0].nombres;
+        apellido = rows[0].apellidos;
+        edad = rows[0].edad;
+        genero = rows[0].genero;
+        console.log(rows);
+      }
+    })
+  })
+
+  let data_rs = {
+    'id' : id,
+    'nombre' : nombre,
+    'apellido' : apellido,
+    'edad' : edad,
+    'genero' : genero
+  }
+
+  let data_send_rs = JSON.stringify(data_rs);
+  fs.writeFileSync('data/datos_dash.json', data_send_rs, (error)=>{
+    if(error){
+      console.log(error);
+    }
+    else{
+      console.log('Archivo creado');
+    }
+  })
+
+  let DATA_MADE = JSON.parse(fs.readFileSync('data/datos_dash.json', (error, data) => {
+    if(error){
+      console.log(error);
+    }
+    else{
+      console.log('Archivo leido');
+      return data;
+    }
+  }))
+  console.log(DATA_MADE);
   res.render('dashboard', {error : ''});
 })
+
+app.post('/dashboard', (req, res)=>{
+
+});
+
+app.get('/dashboard/data', (req, res) => {
+  let data = fs.readFileSync('data/datos_dash.json');
+  let data_json = JSON.parse(data);
+  console.log(data_json);
+  res.send(data_json);
+});
 
 // 404
 app.use((req, res, next) => {
