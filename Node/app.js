@@ -134,13 +134,6 @@ app.post('/registro', (req, res) => {
           if (err) throw err;
           console.log('Datos basicos registrados');
         })
-        
-        let sql_historia = "INSERT INTO historia_clinica(num_documento, Tiempo_historial, evento_historial, descripcion_historial) VALUES (?,?,?,?);"
-        let query_historia = mysql.format(sql_historia, [documento, '', '', '']);
-        await connection.query(query_historia, (err, result) => {
-          if (err) throw err;
-          console.log('Historia clinica registrada');
-        })
       }
     })
   })
