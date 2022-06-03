@@ -12,7 +12,7 @@ const db =  mysql.createPool({
   connectionLimit: 100,
   host: 'localhost',
   user: 'root',
-  password: 'mphr2015',
+  password: 'root',
   database: 'registro_BD',
   port : 3306
 });
@@ -143,8 +143,19 @@ app.post('/registro', (req, res) => {
 
 app.get('/dashboard', (req, res) => {
   console.log('GET /dashboard');
-
-  let nombre, apellido, edad, genero;
+  let nombre = '';
+  let apellido = '';
+  let edad = 0;
+  let genero = '';
+  let telefono = 0;
+  let direccion = '';
+  let departamento = '';
+  let ciudad = '';
+  let estado_civil = '';
+  let estrato = 0;
+  let ocupacion = '';
+  let Regimen_Perteneciente = '';
+  let fecha_de_nacimiento = '';
 
   let data = fs.readFileSync('data/datos_sesion.json');
   let data_json = JSON.parse(data);
@@ -156,8 +167,8 @@ app.get('/dashboard', (req, res) => {
 
   db.getConnection((err, connection) => {
     if (err) throw err;
-    connection.query(sql_search, (err, rows) => {
-      if (err) throw err;
+    connection.query(sql_search, (errr, rows) => {
+      if (errr) throw errr;
       if (rows.length > 0) {
         nombre = rows[0].nombres;
         apellido = rows[0].apellidos;
@@ -168,12 +179,47 @@ app.get('/dashboard', (req, res) => {
     })
   })
 
+  let query_2 = 'SELECT * from datos_usuario WHERE num_documento = ?;';
+  let sql_search_2 = mysql.format(query_2, [id]);
+
+  db.getConnection((err, connection) => {
+    if (err) throw err;
+    connection.query(sql_search_2, (errr, rows) => {
+      if (errr) throw errr;
+      if (rows.length > 0) {
+        telefono = rows[0].telefono;
+        direccion = rows[0].direccion;
+        departamento = rows[0].departamento;
+        ciudad = rows[0].ciudad;
+        estado_civil = rows[0].Estado_civil;
+        estrato = rows[0].Estrato_economico;
+        ocupacion = rows[0].Ocupacion;
+        Regimen_Perteneciente = rows[0].Regimen_Perteneciente;
+        fecha_de_nacimiento = rows[0].fecha_de_nacimiento;
+        console.log(rows);
+      }
+    })
+  })
+
   let data_rs = {
-    'id' : id,
-    'nombre' : nombre,
-    'apellido' : apellido,
-    'edad' : edad,
-    'genero' : genero
+    'registro': {
+      'id' : id,
+      'nombre' : nombre,
+      'apellido' : apellido,
+      'edad' : edad,
+      'genero' : genero 
+    },
+    'datos_usr' : {
+      'telefono' : telefono,
+      'direccion' : direccion,
+      'departamento' : departamento,
+      'ciudad' : ciudad,
+      'estado_civil' : estado_civil,
+      'estrato' : estrato,
+      'ocupacion' : ocupacion,
+      'Regimen_Perteneciente' : Regimen_Perteneciente,
+      'fecha_de_nacimiento' : fecha_de_nacimiento
+    }
   }
 
   let data_send_rs = JSON.stringify(data_rs);
