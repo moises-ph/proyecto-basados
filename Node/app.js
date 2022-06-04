@@ -114,7 +114,7 @@ app.post('/registro', (req, res) => {
   const email = req.body.email;
   const contraseña = req.body.password;
 
-  db.getConnection(async (err, connection) => {
+  db.getConnection( (err, connection) => {
     if (err) throw err;
 
     const sql_search = "SELECT * FROM registro WHERE num_documento = ?;"
@@ -123,14 +123,14 @@ app.post('/registro', (req, res) => {
     const sql_insert = "INSERT INTO registro(num_documento, nombres, apellidos, edad, genero, email, contraseña, tipo_de_usuario, tipo_de_documento) VALUES (?,?,?,?,?,?,?,?,?);"
     const query_sql = mysql.format(sql_insert, [documento, nombre, apellidos, edad, genero, email, contraseña, tipo_usuario, tipo_documento]);
 
-    await connection.query( search_sql,async  (err, result) => {
+    connection.query( search_sql,  (err, result) => {
       if (err) throw err;
       if (result.length > 0) {
         console.log('Usuario ya registrado');
         res.render('registro', {error : 'Usuario ya registrado', mensaje: ''});
       }
       else {
-        await connection.query(query_sql, (err, result) => {
+      connection.query(query_sql, (err, result) => {
           if (err) throw err;
           console.log('Usuario registrado');
           res.render('registro', {error : '', mensaje: 'Usuario registrado'});
@@ -138,7 +138,7 @@ app.post('/registro', (req, res) => {
 
         let sql_datos_basicos = 'INSERT INTO datos_usuario(num_documento, telefono, direccion, departamento, ciudad, Estado_civil, Estrato_economico, Ocupacion, Regimen_Perteneciente, fecha_de_nacimiento) values (?,?,?,?,?,?,?,?,?,?);';
         let query_datos_basicos = mysql.format(sql_datos_basicos, [documento, 0, 'none', 'none', 'none', 'none', 0, 'none', 'none', '2000-01-01']);
-        await connection.query(query_datos_basicos, (err, result) => {
+        connection.query(query_datos_basicos, (err, result) => {
           if (err) throw err;
           console.log('Datos basicos registrados');
         })
@@ -149,22 +149,23 @@ app.post('/registro', (req, res) => {
 
 // DASHBOARD
 
-app.get('/dashboard', (req, res) => {
-
+app.get('/dashboard', async (req, res) => {
   console.log('GET /dashboard');
-  let nombre = '';
-  let apellido = '';
-  let edad = 0;
-  let genero = '';
-  let telefono = 0;
-  let direccion = '';
-  let departamento = '';
-  let ciudad = '';
-  let estado_civil = '';
-  let estrato = 0;
-  let ocupacion = '';
-  let Regimen_Perteneciente = '';
-  let fecha_de_nacimiento = '';
+  var nombre = '';
+  var apellido = '';
+  var edad = 0;
+  var genero = '';
+  var telefono = 0;
+  var direccion = '';
+  var departamento = '';
+  var ciudad = '';
+  var estado_civil = '';
+  var estrato = 0;
+  var ocupacion = '';
+  var Regimen_Perteneciente = '';
+  var fecha_de_nacimiento = '';
+
+  var data_rs = ``;
 
   let data = fs.readFileSync('data/datos_sesion.json');
   let data_json = JSON.parse(data);
@@ -172,53 +173,49 @@ app.get('/dashboard', (req, res) => {
   let id = data_json.id;
   let estado = data_json.estado;
   if(estado === 'activo'){
-  let query = "SELECT nombres, apellidos, edad, genero FROM registro WHERE num_documento = ?;"
-  let sql_search = mysql.format(query, [id]);
+    let query = "SELECT nombres, apellidos, edad, genero FROM registro WHERE num_documento = ?;"
+    let sql_search = mysql.format(query, [id]);
 
-  db.getConnection((err, connection) => {
-    if (err) throw err;
-    connection.query(sql_search, (errr, rows) => {
-      if (errr) throw errr;
-      if (rows.length > 0) {
-        nombre = rows[0].nombres;
-        apellido = rows[0].apellidos;
-        edad = rows[0].edad;
-        genero = rows[0].genero;
-        console.log(rows);
-      }
+    db.getConnection((err, connection) => {
+      if (err) throw err;
+      connection.query(sql_search, async (errr, rows) => {
+        if (errr) throw errr;
+        if (rows.length > 0) {
+          nombre = await rows[0].nombres;
+          apellido = await rows[0].apellidos;
+          edad = await rows[0].edad;
+          genero = await rows[0].genero;
+          console.log(rows);
+        }
+      })
     })
-  })
 
-  let query_2 = 'SELECT * from datos_usuario WHERE num_documento = ?;';
-  let sql_search_2 = mysql.format(query_2, [id]);
+    let query_2 = 'SELECT * from datos_usuario WHERE num_documento = ?;';
+    let sql_search_2 = mysql.format(query_2, [id]);
 
-  db.getConnection((err, connection) => {
-    if (err) throw err;
-    connection.query(sql_search_2, (errr, rows) => {
-      if (errr) throw errr;
-      if (rows.length > 0) {
-        telefono = rows[0].telefono;
-        direccion = rows[0].direccion || 'direccion';
-        departamento = rows[0].departamento;
-        ciudad = rows[0].ciudad;
-        estado_civil = rows[0].Estado_civil;
-        estrato = rows[0].Estrato_economico;
-        ocupacion = rows[0].Ocupacion;
-        Regimen_Perteneciente = rows[0].Regimen_Perteneciente;
-        fecha_de_nacimiento = rows[0].fecha_de_nacimiento;
-        console.log(rows);
-      }
+    db.getConnection((err, connection) => {
+      if (err) throw err;
+      connection.query(sql_search_2, async (errr, rows) => {
+        if (errr) throw errr;
+        if (rows.length > 0) {
+          telefono = await rows[0].telefono;
+          direccion = await rows[0].direccion || 'direccion';
+          departamento = await rows[0].departamento;
+          ciudad = await rows[0].ciudad;
+          estado_civil = await rows[0].Estado_civil;
+          estrato = await rows[0].Estrato_economico;
+          ocupacion = await rows[0].Ocupacion;
+          Regimen_Perteneciente = await rows[0].Regimen_Perteneciente;
+          fecha_de_nacimiento = await rows[0].fecha_de_nacimiento;
+          console.log(rows);
+          res.render('dashboard', {error : '', nombre: nombre, apellido: apellido, edad: edad, genero: genero, telefono: telefono, direccion: direccion, departamento: departamento, ciudad: ciudad, estado_civil: estado_civil, estrato: estrato, ocupacion: ocupacion, Regimen_Perteneciente: Regimen_Perteneciente, fecha_de_nacimiento: fecha_de_nacimiento});
+        }
+      })
     })
-  })
-
-  let data_rs = `{"registro": {"id" : ${id},"nombre" : ${nombre},"apellido" : ${apellido},"edad" : ${edad},"genero" : ${genero} },"datos_usr" : {"telefono" : ${telefono},"direccion" : ${direccion},"departamento" : ${departamento},"ciudad" : ${ciudad},"estado_civil" : ${estado_civil},"estrato" : ${estrato},"ocupacion" : ${ocupacion},"Regimen_Perteneciente" : ${Regimen_Perteneciente},"fecha_de_nacimiento" : ${fecha_de_nacimiento}}}`;
-  console.log(data_rs);
-  res.render('dashboard', {error : '', info: data_rs});
   }
   else{
     res.render('login', {error : 'Inicie sesión para ingresar al dashboard', mensaje: ''});
   }
-  
 })
 
 app.post('/dashboard', (req, res)=>{

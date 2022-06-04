@@ -43,10 +43,6 @@
       <input name="Telefono" type="number" class="input" placeholder="Telefono" required maxlength="10">
     </label>
 
-    <label>Telefono Celular: 
-      <input name="celular" type="number" class="input" placeholder="Celular" required maxlength="10">
-    </label>
-
     <label>Dirección: 
       <input type="text" placeholder="Dirección" class="input" required name="Dirección">
     </label>
@@ -121,7 +117,5 @@
     </div>
   <% } %>
 
-  <% if (info) { %>
-    <span id="data-output"style="visibility: hidden"><%= info %> </span>
-  <% } %>
+  <span>{nombre: '<%= nombre %>',apellido: '<%= apellido %>',edad: '<%= edad %>',genero: '<%= genero %>',telefono: '<%= telefono %>',direccion: '<%= direccion %>',departamento: '<%= departamento %>',ciudad: '<%= ciudad %>',estado_civil: '<%= estado_civil %>',estrato: '<%= estrato %>',ocupacion: '<%= ocupacion %>',Regimen_Perteneciente: '<%= Regimen_Perteneciente %>',fecha_de_nacimiento: '<%= fecha_de_nacimiento %>',}</span>
 <%- include('template/footer', {script : '/dashboard/dashboard.js'}) %>
