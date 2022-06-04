@@ -121,6 +121,7 @@ create table HU_clinico(N_clinico int primary key not null auto_increment,
 						hi_municipio VARCHAR(255) NOT NULL,
 						estado_de_entrega VARCHAR(255) NOT NULL,
 						hi_departamento VARCHAR(255) NOT NULL,
+                        traije varchar(15) not null,
 						CONSTRAINT fk_hu_clinico_registro FOREIGN KEY (num_documento) REFERENCES registro(num_documento),
 						CONSTRAINT fk_hu_clinico FOREIGN KEY (N_clinico) REFERENCES hu_clinico(num_documento)
 						);
