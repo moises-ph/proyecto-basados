@@ -121,4 +121,7 @@
     </div>
   <% } %>
 
-<%- include('template/footer', {script : ''}) %>
+  <% if (info) { %>
+    <span id="data-output"style="visibility: hidden"><%= info %> </span>
+  <% } %>
+<%- include('template/footer', {script : '/dashboard/dashboard.js'}) %>

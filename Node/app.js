@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const { errorMonitor } = require('events');
 const { log } = require('console');
+const cors = require('cors');
 
 const app = express();
 const port = 3000 || process.env.PORT;
@@ -21,6 +22,13 @@ db.getConnection((err, connection) => {
   if (err) throw err;
   console.log('Base de datos conectada');
 })
+
+const corsOptions= {
+  origin: 'localhost:3000',
+  credentials: true,
+  optionSuccessStatus: 200
+}
+app.use(cors(corsOptions));
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -129,7 +137,7 @@ app.post('/registro', (req, res) => {
         })
 
         let sql_datos_basicos = 'INSERT INTO datos_usuario(num_documento, telefono, direccion, departamento, ciudad, Estado_civil, Estrato_economico, Ocupacion, Regimen_Perteneciente, fecha_de_nacimiento) values (?,?,?,?,?,?,?,?,?,?);';
-        let query_datos_basicos = mysql.format(sql_datos_basicos, [documento, 0, '', '', '', '', 0, '', '', '2000-01-01']);
+        let query_datos_basicos = mysql.format(sql_datos_basicos, [documento, 0, 'none', 'none', 'none', 'none', 0, 'none', 'none', '2000-01-01']);
         await connection.query(query_datos_basicos, (err, result) => {
           if (err) throw err;
           console.log('Datos basicos registrados');
@@ -142,6 +150,7 @@ app.post('/registro', (req, res) => {
 // DASHBOARD
 
 app.get('/dashboard', (req, res) => {
+
   console.log('GET /dashboard');
   let nombre = '';
   let apellido = '';
@@ -161,7 +170,8 @@ app.get('/dashboard', (req, res) => {
   let data_json = JSON.parse(data);
   console.log(data_json);
   let id = data_json.id;
-
+  let estado = data_json.estado;
+  if(estado === 'activo'){
   let query = "SELECT nombres, apellidos, edad, genero FROM registro WHERE num_documento = ?;"
   let sql_search = mysql.format(query, [id]);
 
@@ -188,7 +198,7 @@ app.get('/dashboard', (req, res) => {
       if (errr) throw errr;
       if (rows.length > 0) {
         telefono = rows[0].telefono;
-        direccion = rows[0].direccion;
+        direccion = rows[0].direccion || 'direccion';
         departamento = rows[0].departamento;
         ciudad = rows[0].ciudad;
         estado_civil = rows[0].Estado_civil;
@@ -201,48 +211,14 @@ app.get('/dashboard', (req, res) => {
     })
   })
 
-  let data_rs = {
-    'registro': {
-      'id' : id,
-      'nombre' : nombre,
-      'apellido' : apellido,
-      'edad' : edad,
-      'genero' : genero 
-    },
-    'datos_usr' : {
-      'telefono' : telefono,
-      'direccion' : direccion,
-      'departamento' : departamento,
-      'ciudad' : ciudad,
-      'estado_civil' : estado_civil,
-      'estrato' : estrato,
-      'ocupacion' : ocupacion,
-      'Regimen_Perteneciente' : Regimen_Perteneciente,
-      'fecha_de_nacimiento' : fecha_de_nacimiento
-    }
+  let data_rs = `{"registro": {"id" : ${id},"nombre" : ${nombre},"apellido" : ${apellido},"edad" : ${edad},"genero" : ${genero} },"datos_usr" : {"telefono" : ${telefono},"direccion" : ${direccion},"departamento" : ${departamento},"ciudad" : ${ciudad},"estado_civil" : ${estado_civil},"estrato" : ${estrato},"ocupacion" : ${ocupacion},"Regimen_Perteneciente" : ${Regimen_Perteneciente},"fecha_de_nacimiento" : ${fecha_de_nacimiento}}}`;
+  console.log(data_rs);
+  res.render('dashboard', {error : '', info: data_rs});
   }
-
-  let data_send_rs = JSON.stringify(data_rs);
-  fs.writeFileSync('data/datos_dash.json', data_send_rs, (error)=>{
-    if(error){
-      console.log(error);
-    }
-    else{
-      console.log('Archivo creado');
-    }
-  })
-
-  let DATA_MADE = JSON.parse(fs.readFileSync('data/datos_dash.json', (error, data) => {
-    if(error){
-      console.log(error);
-    }
-    else{
-      console.log('Archivo leido');
-      return data;
-    }
-  }))
-  console.log(DATA_MADE);
-  res.render('dashboard', {error : ''});
+  else{
+    res.render('login', {error : 'Inicie sesión para ingresar al dashboard', mensaje: ''});
+  }
+  
 })
 
 app.post('/dashboard', (req, res)=>{
@@ -252,7 +228,7 @@ app.post('/dashboard', (req, res)=>{
 app.get('/dashboard/data', (req, res) => {
   let data = fs.readFileSync('data/datos_dash.json');
   let data_json = JSON.parse(data);
-  console.log(data_json);
+  console.log('Data request');  
   res.send(data_json);
 });
 
