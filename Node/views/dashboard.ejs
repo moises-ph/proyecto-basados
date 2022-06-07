@@ -1,28 +1,28 @@
 <%- include('template/header', {titulo : 'Dashboard', css : '/dashboard/datos_basicos.css'}); %>
   <h1>Datos básicos</h1>
-  <form class="formulario" id="form" name="Formulario-datosbasicos-lgd" action="/dashboard" method="post">
+  <form class="formulario" id="form" name="Formulario-datosbasicos-lgd" action="/dashboard" method="POST">
     <div class="reform">
     <label for="nombre-lock">Nombre: 
-      <input id="nombre-lock" value="Nombre" type="text" placeholder="Nombre" class="input" disabled>
+      <input name="nombre" id="nombre-lock" value="Nombre" type="text" placeholder="Nombre" class="input" disabled>
     </label>
     <label for="apellidos-lock">Apellidos: 
-      <input id="apellidos-lock" value="Apellidos" type="text" placeholder="Apellidos" class="input" disabled>
+      <input name="apellidos" id="apellidos-lock" value="Apellidos" type="text" placeholder="Apellidos" class="input" disabled>
     </label>
 
     <label for="fecha-nacimiento">Fecha de nacimiento: 
-      <input type="date" name="fechaNacimiento" id="fecha-nacimiento">
+      <input name="fecha_nacimiento" type="date" name="fechaNacimiento" id="fecha-nacimiento">
     </label>
 
     <label for="edad-act">Edad:
-      <input type="number" name="edad-act" id="edad-act" disabled>
+      <input type="number" name="edad" name="edad-act" id="edad-act" disabled>
     </label>
 
     <label for="genero">Genero: 
-      <input type="text" name="genero" id="genero" class="input" disabled>
+      <input type="text" name="genero" name="genero" id="genero" class="input" disabled>
     </label>
 
     <label >Documento de Identidad:
-      <select name="Tipo_documento" id="tipo_id">
+      <select name="tipo_documento" id="tipo_id">
         <option value="Seleccione">Seleccione</option>
         <option value="C.C">C.C</option>
         <option value="Carnet diplomatico">Carnet diplomatico</option>   
@@ -44,7 +44,7 @@
     </label>
 
     <label>Dirección: 
-      <input type="text" id="direccion" placeholder="Dirección" class="input" name="Dirección">
+      <input type="text" id="direccion" placeholder="Dirección" class="input" name="Direccion">
     </label>
 
     <label>Departamento:
@@ -98,18 +98,17 @@
       </select>
     </label>
 
-    <div class="reform">
       <label for="email">Email: 
         <input type="email" placeholder="Email" class="input" name="email" id="email">
         <input type="email" placeholder="Confirmar Email" class="input" name="email_con" id="email-con">
       </label>
       
       <label for="contraseña">Contraseña: 
-        <input type="password" placeholder="Contraseña" class="input" name="contraseña" id="contraseña">
-        <input type="password" placeholder="Confirmar Contraseña" class="input" name="contraseña_con" id="contraseña-con">
+        <input type="password" placeholder="Contraseña" class="input" name="password" id="contraseña">
+        <input type="password" placeholder="Confirmar Contraseña" class="input" name="password" id="contraseña-con">
       </label>
     </div>
-    <input type="submit" class="submit" value="Guardar">
+    <input type="submit" class="submit" value="Guardar" id="enviar">
   </form>
 
   <% if (error) { %>
@@ -118,5 +117,5 @@
     </div>
   <% } %>
 
-  <span id="data" style="visibility: hidden;"><%= data %> </span>
+<span id="data" style="visibility: hidden;"><%= data %> </span>
 <%- include('template/footer', {script : '/dashboard/dash.js'}) %>

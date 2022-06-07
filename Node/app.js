@@ -248,7 +248,7 @@ app.get('/dashboard', async (req, res) => {
     };
     
     console.log(data_entire);
-    let data_rs = JSON.stringify(data_entire);
+    var data_rs = JSON.stringify(data_entire);
 
     res.render('dashboard', {error : '', data : data_rs});
   }
@@ -257,8 +257,63 @@ app.get('/dashboard', async (req, res) => {
   }
 })
 
-app.post('/dashboard', (req, res)=>{
-  
+app.post('/dashboard', async (req, res)=>{
+
+  let consulta = (columna, valor, id) =>{
+    let query = `UPDATE datos_usuario SET ${columna} = ${valor} WHERE num_documento = ${id};`;
+    let sql_search = mysql.format(query);
+    db.getConnection( (err, connection) => {
+      if (err) throw err;
+      connection.query(sql_search, (err, rows) => {
+        if (err) throw err;
+        if (rows.length > 0) {
+          console.log('Datos actualizados');
+        }
+      })
+    })
+  }
+
+  console.log('POST /dashboard');
+  let data_post = req.body;
+  let data_file = fs.readFileSync('data/datos_sesion.json');
+  let data_json = JSON.parse(data_file);
+  let id = data_json.id;
+
+  let data_form = [['telefono',data_post.Telefono],['direccion',data_post.direccion],['departamento', data_post.departamento],
+                  ['ciudad', data_post.ciudad],['estado_civil', data_post.estado_civil],['estrato', data_post.estrato],
+                  ['ocupacion', data_post.ocupacion],['Regimen_Perteneciente', data_post.Regimen_Perteneciente],
+                  ['fecha_de_nacimiento', data_post.fecha_nacimiento],
+                  ['tipo_de_documento', data_json.tipo_documento],
+                  ['email', data_json.email],['contraseña', data_json.password[0]]];
+
+
+  let query = `SELECT * from datos_usuario WHERE num_documento = ${id} ;`;
+  let data_db = await new Promise (peticion =>{
+    db.getConnection((err, conection) => {
+      if (err) throw err;
+      conection.query(query, (err, rows) =>{
+        if (err) throw err;
+        if(rows.length > 0){
+          peticion(rows)
+        }
+      })})})
+
+  data_form.map(element =>{
+    let row = element[0];
+    let value = element[1];
+    let db_value = data_db[0][row];
+
+    if(value !== db_value ){
+      /* TERMINAR */
+    }
+  })
+
+
+  console.log(data_db);
+  console.log(data_post);
+
+
+  res.redirect('/dashboard');
 });
 
 app.get('/dashboard/data', (req, res) => {

@@ -13,6 +13,6 @@ ids_data.map(value => {
 })
 
 var form = document.getElementById('form');
-form.addEventListener('submit', (e) => {
+/*form.addEventListener('submit', (e) => {
     e.preventDefault();
-})
+})*/
