@@ -13,7 +13,7 @@ const db =  mysql.createPool({
   connectionLimit: 100,
   host: 'localhost',
   user: 'root',
-  password: 'mphr2015',
+  password: 'root',
   database: 'registro_BD',
   port : 3306
 });
