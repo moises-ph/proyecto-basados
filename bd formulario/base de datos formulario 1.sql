@@ -22,7 +22,7 @@ create table datos_usuario (DU_num_documento int primary key,
                             DU_Ocupacion varchar(30) not null,
                             DU_Regimen_Perteneciente varchar(50) not null,
 									 DU_fecha_de_nacimiento date not null,
-                            constraint fk_registro_datos_usuario foreign key (DU_num_documento) references registroR_num_documento)
+                            constraint fk_registro_datos_usuario foreign key (DU_num_documento) references registro (R_num_documento)
                             );
 
 create table acciones_registro(
@@ -43,7 +43,7 @@ DELIMITER //
 create trigger log_registro_insert after insert on registro
 for each row begin
 	insert into acciones_registro(AR_usuario, AR_documento_identificacion, AR_accion) 
-    values (concat(NEW.nombres, ' ', NEW.apellidos), NEW.num_documento, "INSERT (registro)");
+    values (concat(NEW.R_nombres, ' ', NEW.R_apellidos), NEW.R_num_documento, "INSERT (registro)");
 end //
 delimiter ;
 
@@ -51,7 +51,7 @@ DELIMITER //
 create trigger log_registro_update after update on registro
 for each row begin
 	insert into acciones_registro(AR_usuario, AR_documento_identificacion, AR_accion) 
-    values (concat(NEW.nombres, ' ', NEW.apellidos), NEW.num_documento, "UPDATE (actualizó información)");
+    values (concat(NEW.R_nombres, ' ', NEW.R_apellidos), NEW.R_num_documento, "UPDATE (actualizó información)");
 end //
 delimiter ;
 
@@ -59,7 +59,7 @@ DELIMITER //
 create trigger log_datos after update on datos_usuario
 for each row begin
 	insert into acciones_datos(AD_usuario, AD_documento_identificacion, AD_accion) 
-    values (concat(registro.nomrbes, ' ', registro.apellidos), NEW.num_documento, "UPDATE (actualizó datos basicos)");
+    values (concat((select r.R_nombres from registro r where r.R_num_documento = NEW.DU_num_documento), ' ', (select r.R_apellidos from registro r where r.R_num_documento = NEW.DU_num_documento)), NEW.DU_num_documento, "UPDATE (actualizó datos basicos)");
 end //
 delimiter ;	 
 
@@ -88,7 +88,7 @@ create table HU_clinico(HU_N_clinico int primary key not null auto_increment,
                         HU_genero VARCHAR(10) NOT NULL,
                         HU_tipo_de_documento VARCHAR(50) NOT NULL,
 								HU_num_documento INT NOT NULL,
-                        HU_fecha_de_nacimiento DATE NOT NULL,registro_bd
+                        HU_fecha_de_nacimiento DATE NOT NULL,
                         HU_edad INT(3) NOT NULL,
                         HU_direccion_residencia VARCHAR(255) NOT NULL,
                         HU_per_municipio VARCHAR(50) NOT NULL,
@@ -122,5 +122,5 @@ create table HU_clinico(HU_N_clinico int primary key not null auto_increment,
 								HU_estado_de_entrega VARCHAR(255) NOT NULL,
 								HU_hi_departamento VARCHAR(255) NOT NULL,
 								CONSTRAINT fk_hu_clinico_registro FOREIGN KEY (HU_num_documento) REFERENCES registro(R_num_documento),
-								CONSTRAINT fk_hu_clinico FOREIGN KEY (HU_N_clinico) REFERENCES hu_clinico(HU_num_documento)
+								CONSTRAINT fk_hu_clinico FOREIGN KEY (HU_N_clinico) REFERENCES HU_clinico(HU_num_documento)
 						);
