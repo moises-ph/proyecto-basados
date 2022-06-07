@@ -1,12 +1,12 @@
 <%- include('template/header', {titulo : 'Dashboard', css : '/dashboard/datos_basicos.css'}); %>
   <h1>Datos básicos</h1>
-  <form class="formulario" name="Formulario-datosbasicos-lgd" action="" method="post">
+  <form class="formulario" id="form" name="Formulario-datosbasicos-lgd" action="/dashboard" method="post">
     <div class="reform">
     <label for="nombre-lock">Nombre: 
-      <input id="nombre-lock" value="Nombre" type="text" placeholder="Nombre" class="input" required disabled>
+      <input id="nombre-lock" value="Nombre" type="text" placeholder="Nombre" class="input" disabled>
     </label>
     <label for="apellidos-lock">Apellidos: 
-      <input id="apellidos-lock" value="Apellidos" type="text" placeholder="Apellidos" class="input" required disabled>
+      <input id="apellidos-lock" value="Apellidos" type="text" placeholder="Apellidos" class="input" disabled>
     </label>
 
     <label for="fecha-nacimiento">Fecha de nacimiento: 
@@ -22,7 +22,7 @@
     </label>
 
     <label >Documento de Identidad:
-      <select name="Tipo_documento" id="" required>
+      <select name="Tipo_documento" id="tipo_id">
         <option value="Seleccione">Seleccione</option>
         <option value="C.C">C.C</option>
         <option value="Carnet diplomatico">Carnet diplomatico</option>   
@@ -40,28 +40,24 @@
     </label>
 
     <label>Telefono:
-      <input name="Telefono" type="number" class="input" placeholder="Telefono" required maxlength="10">
-    </label>
-
-    <label>Telefono Celular: 
-      <input name="celular" type="number" class="input" placeholder="Celular" required maxlength="10">
+      <input name="Telefono" id="telefono" type="number" class="input" placeholder="Telefono" maxlength="10">
     </label>
 
     <label>Dirección: 
-      <input type="text" placeholder="Dirección" class="input" required name="Dirección">
+      <input type="text" id="direccion" placeholder="Dirección" class="input" name="Dirección">
     </label>
 
     <label>Departamento:
-      <input type="text" placeholder="Departamento" class="input" required name="Departamento">
+      <input type="text" id="departamento" placeholder="Departamento" class="input" name="Departamento">
     </label>
 
     <label>Ciudad:
-      <input type="text" placeholder="Ciudad" class="input" required name="Ciudad">
+      <input type="text" id="ciudad" placeholder="Ciudad" class="input" name="Ciudad">
     </label>
 
     <label>Estado Civil:
-      <select name="EstadoCivil" id="estado-civil"  required required>
-        <option value="Seleccione" disabled>Seleccione</option>
+      <select name="EstadoCivil" id="estado-civil">
+        <option value="Seleccione">Seleccione</option>
         <option value="Soltero">Soltero</option>
         <option value="Casado">Casado</option>
         <option value="Divorciado">Divorciado</option>
@@ -70,8 +66,8 @@
     </label>
 
     <label >Estrato Socioeconómico:
-      <select name="estrato" id="estrato" required required>
-        <option value="Seleccione" disabled>Seleccione</option>
+      <select name="estrato" id="estrato">
+        <option value="Seleccione">Seleccione</option>
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
@@ -82,8 +78,8 @@
     </label>
 
     <label >Ocupación:
-      <select name="ocupacion" id="ocupacion" required required>
-        <option value="Seleccione" disabled>Seleccione</option>
+      <select name="ocupacion" id="ocupacion" required>
+        <option value="Seleccione">Seleccione</option>
         <option value="Estudiante">Estudiante</option>
         <option value="Empleado">Empleado</option>
         <option value="Independiente">Independiente</option>
@@ -94,7 +90,8 @@
     </label>
 
     <label name="regimen-perteneciente">Régimen Perteneciente:
-      <select name="regimenPerteneciente" required id="">
+      <select name="regimenPerteneciente" id="regimen-perteneciente">
+        <option value="Seleccione">Seleccione</option>
         <option value="Subsidiado">Subsidiado</option>
         <option value="Contributivo">Contributivo</option>
         <option value="Independiente">Independiente</option>
@@ -103,13 +100,13 @@
 
     <div class="reform">
       <label for="email">Email: 
-        <input type="email" placeholder="Email" class="input" required name="email" id="email">
-        <input type="email" placeholder="Confirmar Email" class="input" required name="email_con" id="email-con">
+        <input type="email" placeholder="Email" class="input" name="email" id="email">
+        <input type="email" placeholder="Confirmar Email" class="input" name="email_con" id="email-con">
       </label>
       
       <label for="contraseña">Contraseña: 
-        <input type="password" placeholder="Contraseña" class="input" required name="contraseña" id="contraseña">
-        <input type="password" placeholder="Confirmar Contraseña" class="input" required name="contraseña_con" id="contraseña-con">
+        <input type="password" placeholder="Contraseña" class="input" name="contraseña" id="contraseña">
+        <input type="password" placeholder="Confirmar Contraseña" class="input" name="contraseña_con" id="contraseña-con">
       </label>
     </div>
     <input type="submit" class="submit" value="Guardar">
@@ -121,4 +118,5 @@
     </div>
   <% } %>
 
-<%- include('template/footer', {script : ''}) %>
+  <span id="data" style="visibility: hidden;"><%= data %> </span>
+<%- include('template/footer', {script : '/dashboard/dash.js'}) %>

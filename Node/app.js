@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const { errorMonitor } = require('events');
 const { log } = require('console');
+const cors = require('cors');
 
 const app = express();
 const port = 3000 || process.env.PORT;
@@ -21,6 +22,13 @@ db.getConnection((err, connection) => {
   if (err) throw err;
   console.log('Base de datos conectada');
 })
+
+const corsOptions= {
+  origin: 'localhost:3000',
+  credentials: true,
+  optionSuccessStatus: 200
+}
+app.use(cors(corsOptions));
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -106,7 +114,7 @@ app.post('/registro', (req, res) => {
   const email = req.body.email;
   const contraseña = req.body.password;
 
-  db.getConnection(async (err, connection) => {
+  db.getConnection( (err, connection) => {
     if (err) throw err;
 
     const sql_search = "SELECT * FROM registro WHERE num_documento = ?;"
@@ -115,22 +123,22 @@ app.post('/registro', (req, res) => {
     const sql_insert = "INSERT INTO registro(num_documento, nombres, apellidos, edad, genero, email, contraseña, tipo_de_usuario, tipo_de_documento) VALUES (?,?,?,?,?,?,?,?,?);"
     const query_sql = mysql.format(sql_insert, [documento, nombre, apellidos, edad, genero, email, contraseña, tipo_usuario, tipo_documento]);
 
-    await connection.query( search_sql,async  (err, result) => {
+    connection.query( search_sql,  (err, result) => {
       if (err) throw err;
       if (result.length > 0) {
         console.log('Usuario ya registrado');
         res.render('registro', {error : 'Usuario ya registrado', mensaje: ''});
       }
       else {
-        await connection.query(query_sql, (err, result) => {
+      connection.query(query_sql, (err, result) => {
           if (err) throw err;
           console.log('Usuario registrado');
           res.render('registro', {error : '', mensaje: 'Usuario registrado'});
         })
 
         let sql_datos_basicos = 'INSERT INTO datos_usuario(num_documento, telefono, direccion, departamento, ciudad, Estado_civil, Estrato_economico, Ocupacion, Regimen_Perteneciente, fecha_de_nacimiento) values (?,?,?,?,?,?,?,?,?,?);';
-        let query_datos_basicos = mysql.format(sql_datos_basicos, [documento, 0, '', '', '', '', 0, '', '', '2000-01-01']);
-        await connection.query(query_datos_basicos, (err, result) => {
+        let query_datos_basicos = mysql.format(sql_datos_basicos, [documento, 0, 'none', 'none', 'none', 'none', 0, 'none', 'none', '2000-01-01']);
+        connection.query(query_datos_basicos, (err, result) => {
           if (err) throw err;
           console.log('Datos basicos registrados');
         })
@@ -141,118 +149,122 @@ app.post('/registro', (req, res) => {
 
 // DASHBOARD
 
-app.get('/dashboard', (req, res) => {
+app.get('/dashboard', async (req, res) => {
   console.log('GET /dashboard');
-  let nombre = '';
-  let apellido = '';
-  let edad = 0;
-  let genero = '';
-  let telefono = 0;
-  let direccion = '';
-  let departamento = '';
-  let ciudad = '';
-  let estado_civil = '';
-  let estrato = 0;
-  let ocupacion = '';
-  let Regimen_Perteneciente = '';
-  let fecha_de_nacimiento = '';
+  var nombre = '';
+  var apellido = '';
+  var edad = 0;
+  var genero = '';
+  var telefono = 0;
+  var direccion = '';
+  var departamento = '';
+  var ciudad = '';
+  var estado_civil = '';
+  var estrato = 0;
+  var ocupacion = '';
+  var Regimen_Perteneciente = '';
+  var fecha_de_nacimiento = '';
+  var tipo_documento = '';
 
   let data = fs.readFileSync('data/datos_sesion.json');
   let data_json = JSON.parse(data);
   console.log(data_json);
   let id = data_json.id;
+  let estado = data_json.estado;
+  if(estado === 'activo'){
+    let query = "SELECT nombres, apellidos, edad, genero, tipo_de_documento FROM registro WHERE num_documento = ?;"
+    let sql_search = mysql.format(query, [id]);
 
-  let query = "SELECT nombres, apellidos, edad, genero FROM registro WHERE num_documento = ?;"
-  let sql_search = mysql.format(query, [id]);
+    let query_2 = 'SELECT telefono, direccion, departamento, ciudad, Estado_civil, Estrato_economico,Ocupacion, Regimen_Perteneciente, date_format(fecha_de_nacimiento, "%Y-%m-%d") as fecha_de_nacimiento from datos_usuario WHERE num_documento = ?;';
+    let sql_search_2 = mysql.format(query_2, [id]);
 
-  db.getConnection((err, connection) => {
-    if (err) throw err;
-    connection.query(sql_search, (errr, rows) => {
-      if (errr) throw errr;
-      if (rows.length > 0) {
-        nombre = rows[0].nombres;
-        apellido = rows[0].apellidos;
-        edad = rows[0].edad;
-        genero = rows[0].genero;
-        console.log(rows);
-      }
-    })
-  })
+    let data1 = await new Promise (peticion => {db.getConnection( (err, connection) => {
+      if (err) throw err;
+      connection.query(sql_search, (err, rows) => {
+        if (err) throw err;
+        if (rows.length > 0) {
+          var resultado = rows;
+          nombre = resultado[0].nombres;
+          apellido = resultado[0].apellidos;
+          edad = resultado[0].edad;
+          genero = resultado[0].genero;
+          peticion({
+            nombre : nombre,
+            apellido : apellido,
+            edad : edad,
+            genero : genero,
+            tipo_documento : resultado[0].tipo_de_documento
+          });
+        }
+      })
+    })});
 
-  let query_2 = 'SELECT * from datos_usuario WHERE num_documento = ?;';
-  let sql_search_2 = mysql.format(query_2, [id]);
+    let data2 = await new Promise (peticion => {db.getConnection( (err, connection) => {
+      if (err) throw err;
+      connection.query(sql_search_2, (err, rows) => {
+        if (err) throw err;
+        if (rows.length > 0) {
+          var resultado = rows;
+          telefono = resultado[0].telefono;
+          direccion = resultado[0].direccion;
+          departamento = resultado[0].departamento;
+          ciudad = resultado[0].ciudad;
+          estado_civil = resultado[0].Estado_civil;
+          estrato = resultado[0].Estrato_economico;
+          ocupacion = resultado[0].Ocupacion;
+          Regimen_Perteneciente = resultado[0].Regimen_Perteneciente;
+          fecha_de_nacimiento = resultado[0].fecha_de_nacimiento;
+          peticion({
+            telefono : telefono,
+            direccion : direccion,
+            departamento : departamento,
+            ciudad : ciudad,
+            estado_civil : estado_civil,
+            estrato : estrato,
+            ocupacion : ocupacion,
+            Regimen_Perteneciente : Regimen_Perteneciente,
+            fecha_de_nacimiento : fecha_de_nacimiento
+          });
+        }
+      })
+    })});
 
-  db.getConnection((err, connection) => {
-    if (err) throw err;
-    connection.query(sql_search_2, (errr, rows) => {
-      if (errr) throw errr;
-      if (rows.length > 0) {
-        telefono = rows[0].telefono;
-        direccion = rows[0].direccion;
-        departamento = rows[0].departamento;
-        ciudad = rows[0].ciudad;
-        estado_civil = rows[0].Estado_civil;
-        estrato = rows[0].Estrato_economico;
-        ocupacion = rows[0].Ocupacion;
-        Regimen_Perteneciente = rows[0].Regimen_Perteneciente;
-        fecha_de_nacimiento = rows[0].fecha_de_nacimiento;
-        console.log(rows);
-      }
-    })
-  })
+    let data_entire = {
+      numerodocumento : id,
+      nombre : data1.nombre,
+      apellido : data1.apellido,
+      edad : data1.edad,
+      genero : data1.genero,
+      tipo_documento : data1.tipo_documento,
+      telefono : data2.telefono,
+      direccion : data2.direccion,
+      departamento : data2.departamento,
+      ciudad : data2.ciudad,
+      estado_civil : data2.estado_civil,
+      estrato : data2.estrato,
+      ocupacion : data2.ocupacion,
+      Regimen_Perteneciente : data2.Regimen_Perteneciente,
+      fecha_de_nacimiento : data2.fecha_de_nacimiento
+    };
+    
+    console.log(data_entire);
+    let data_rs = JSON.stringify(data_entire);
 
-  let data_rs = {
-    'registro': {
-      'id' : id,
-      'nombre' : nombre,
-      'apellido' : apellido,
-      'edad' : edad,
-      'genero' : genero 
-    },
-    'datos_usr' : {
-      'telefono' : telefono,
-      'direccion' : direccion,
-      'departamento' : departamento,
-      'ciudad' : ciudad,
-      'estado_civil' : estado_civil,
-      'estrato' : estrato,
-      'ocupacion' : ocupacion,
-      'Regimen_Perteneciente' : Regimen_Perteneciente,
-      'fecha_de_nacimiento' : fecha_de_nacimiento
-    }
+    res.render('dashboard', {error : '', data : data_rs});
   }
-
-  let data_send_rs = JSON.stringify(data_rs);
-  fs.writeFileSync('data/datos_dash.json', data_send_rs, (error)=>{
-    if(error){
-      console.log(error);
-    }
-    else{
-      console.log('Archivo creado');
-    }
-  })
-
-  let DATA_MADE = JSON.parse(fs.readFileSync('data/datos_dash.json', (error, data) => {
-    if(error){
-      console.log(error);
-    }
-    else{
-      console.log('Archivo leido');
-      return data;
-    }
-  }))
-  console.log(DATA_MADE);
-  res.render('dashboard', {error : ''});
+  else{
+    res.render('login', {error : 'Inicie sesión para ingresar al dashboard', mensaje: ''});
+  }
 })
 
 app.post('/dashboard', (req, res)=>{
-
+  
 });
 
 app.get('/dashboard/data', (req, res) => {
   let data = fs.readFileSync('data/datos_dash.json');
   let data_json = JSON.parse(data);
-  console.log(data_json);
+  console.log('Data request');  
   res.send(data_json);
 });
 
