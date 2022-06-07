@@ -26,20 +26,20 @@
   <div id="mensaje"><%= mensaje %></div>
   <% if (error == '' && mensaje == '') { %>
     <script>
-      document.getElementById("error").style.display = "none";
-      document.getElementById("mensaje").style.display = "none";
+      document.getElementById("error").style.visibility = "hidden";
+      document.getElementById("mensaje").style.visibility = "hidden";
     </script>
   <% } %>
   <% if (error != '') { %>
     <script>
-      document.getElementById("error").style.display = "block";
-      document.getElementById("mensaje").style.display = "none";
+      document.getElementById("error").style.visibility = "visible";
+      document.getElementById("mensaje").style.visibility = "hidden";
     </script>
   <% } %>
   <% if (mensaje != '') { %>
     <script>
-      document.getElementById("error").style.display = "none";
-      document.getElementById("mensaje").style.display = "block";
+      document.getElementById("error").style.visibility = "hidden";
+      document.getElementById("mensaje").style.visibility = "visible";
     </script>
   <% } %>
 

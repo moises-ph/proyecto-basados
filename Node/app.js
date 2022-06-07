@@ -13,7 +13,7 @@ const db =  mysql.createPool({
   connectionLimit: 100,
   host: 'localhost',
   user: 'root',
-  password: 'mphr2015',
+  password: 'root',
   database: 'registro_BD',
   port : 3306
 });
@@ -44,27 +44,54 @@ app.get('/', (req, res) => {
 // LOGIN
 
 app.get('/login', (req, res) => {
+  let data_null_tmp ={
+    'id': 0,
+    'estado': 'inactivo'
+  }
+  let data_null = JSON.stringify(data_null_tmp);
+  fs.writeFileSync('data/datos_sesion.json', data_null, (error)=>{
+            if(error){
+              console.log(error);
+            }
+            else{
+              console.log('Archivo editado a 0');
+            }
+          });
   console.log('GET /login');
   res.render('login', {error : '', mensaje: ''});
 })
 
 app.post('/login', (req, res) => {
   console.log('POST /login');
+  let data_null_tmp ={
+    'id': 0,
+    'estado': 'inactivo'
+  }
+  let data_null = JSON.stringify(data_null_tmp);
+  fs.writeFileSync('data/datos_sesion.json', data_null, (error)=>{
+            if(error){
+              console.log(error);
+            }
+            else{
+              console.log('Archivo editado a 0');
+            }
+          });
   const id_usuario = parseInt(req.body.documento_id);
   const password = req.body.Contraseña;
 
-  let sql_search = `SELECT * FROM registro WHERE num_documento = ${id_usuario};`;
+  let sql_search = `SELECT * FROM registro WHERE R_num_documento = ${id_usuario};`;
   
   let query = mysql.format(sql_search);
   console.log(query);
   db.getConnection((err, connection) => {
     if (err) throw err;
+    console.log('Conexion establecida');
     connection.query(query, (err, rows) => {
       if (err) throw err;
       if (rows.length > 0) {
         var resultado = rows;
         console.log(resultado);
-        if(resultado[0].contraseña == password){
+        if(resultado[0].R_contraseña == password){
 
           let data_temp = {
             'id' : id_usuario,
@@ -99,10 +126,36 @@ app.post('/login', (req, res) => {
 // REGISTRO
 
 app.get('/registro', (req, res) => {
+  let data_null_tmp ={
+    'id': 0,
+    'estado': 'inactivo'
+  }
+  let data_null = JSON.stringify(data_null_tmp);
+  fs.writeFileSync('data/datos_sesion.json', data_null, (error)=>{
+            if(error){
+              console.log(error);
+            }
+            else{
+              console.log('Archivo editado a 0');
+            }
+          });
   res.render('registro', {error : '', mensaje: ''});
 }) 
 
 app.post('/registro', (req, res) => {
+  let data_null_tmp ={
+    'id': 0,
+    'estado': 'inactivo'
+  }
+  let data_null = JSON.stringify(data_null_tmp);
+  fs.writeFileSync('data/datos_sesion.json', data_null, (error)=>{
+            if(error){
+              console.log(error);
+            }
+            else{
+              console.log('Archivo editado a 0');
+            }
+          });
   console.log(req);
   const tipo_usuario = req.body.usuario;
   const tipo_documento = req.body.Tipo_documento;
@@ -116,11 +169,12 @@ app.post('/registro', (req, res) => {
 
   db.getConnection( (err, connection) => {
     if (err) throw err;
+    console.log('Conexion establecida');
 
-    const sql_search = "SELECT * FROM registro WHERE num_documento = ?;"
+    const sql_search = "SELECT * FROM registro WHERE R_num_documento = ?;"
     const search_sql = mysql.format(sql_search, [documento]);
     
-    const sql_insert = "INSERT INTO registro(num_documento, nombres, apellidos, edad, genero, email, contraseña, tipo_de_usuario, tipo_de_documento) VALUES (?,?,?,?,?,?,?,?,?);"
+    const sql_insert = "INSERT INTO registro(R_num_documento,R_nombres, R_apellidos, R_edad, R_genero, R_email, R_contraseña, R_tipo_de_usuario, R_tipo_de_documento) VALUES (?,?,?,?,?,?,?,?,?);"
     const query_sql = mysql.format(sql_insert, [documento, nombre, apellidos, edad, genero, email, contraseña, tipo_usuario, tipo_documento]);
 
     connection.query( search_sql,  (err, result) => {
@@ -136,7 +190,7 @@ app.post('/registro', (req, res) => {
           res.render('registro', {error : '', mensaje: 'Usuario registrado'});
         })
 
-        let sql_datos_basicos = 'INSERT INTO datos_usuario(num_documento, telefono, direccion, departamento, ciudad, Estado_civil, Estrato_economico, Ocupacion, Regimen_Perteneciente, fecha_de_nacimiento) values (?,?,?,?,?,?,?,?,?,?);';
+        let sql_datos_basicos = 'INSERT INTO datos_usuario(DU_num_documento, DU_telefono, DU_direccion, DU_departamento, DU_ciudad, DU_Estado_civil, DU_Estrato_economico, DU_Ocupacion, DU_Regimen_Perteneciente, DU_fecha_de_nacimiento) values (?,?,?,?,?,?,?,?,?,?);';
         let query_datos_basicos = mysql.format(sql_datos_basicos, [documento, 0, 'none', 'none', 'none', 'none', 0, 'none', 'none', '2000-01-01']);
         connection.query(query_datos_basicos, (err, result) => {
           if (err) throw err;
@@ -172,28 +226,29 @@ app.get('/dashboard', async (req, res) => {
   let id = data_json.id;
   let estado = data_json.estado;
   if(estado === 'activo'){
-    let query = "SELECT nombres, apellidos, edad, genero, tipo_de_documento FROM registro WHERE num_documento = ?;"
+    let query = "SELECT R_nombres, R_apellidos, R_edad, R_genero, R_tipo_de_documento FROM registro WHERE R_num_documento = ?;"
     let sql_search = mysql.format(query, [id]);
 
-    let query_2 = 'SELECT telefono, direccion, departamento, ciudad, Estado_civil, Estrato_economico,Ocupacion, Regimen_Perteneciente, date_format(fecha_de_nacimiento, "%Y-%m-%d") as fecha_de_nacimiento from datos_usuario WHERE num_documento = ?;';
+    let query_2 = 'SELECT DU_telefono, DU_direccion, DU_departamento, DU_ciudad, DU_Estado_civil, DU_Estrato_economico,DU_Ocupacion, DU_Regimen_Perteneciente, date_format(DU_fecha_de_nacimiento, "%Y-%m-%d") as fecha_de_nacimiento from datos_usuario WHERE DU_num_documento = ?;';
     let sql_search_2 = mysql.format(query_2, [id]);
 
     let data1 = await new Promise (peticion => {db.getConnection( (err, connection) => {
       if (err) throw err;
+      console.log('Conexion establecida');
       connection.query(sql_search, (err, rows) => {
         if (err) throw err;
         if (rows.length > 0) {
           var resultado = rows;
-          nombre = resultado[0].nombres;
-          apellido = resultado[0].apellidos;
-          edad = resultado[0].edad;
-          genero = resultado[0].genero;
+          nombre = resultado[0].R_nombres;
+          apellido = resultado[0].R_apellidos;
+          edad = resultado[0].R_edad;
+          genero = resultado[0].R_genero;
           peticion({
             nombre : nombre,
             apellido : apellido,
             edad : edad,
             genero : genero,
-            tipo_documento : resultado[0].tipo_de_documento
+            tipo_documento : resultado[0].R_tipo_de_documento
           });
         }
       })
@@ -201,19 +256,20 @@ app.get('/dashboard', async (req, res) => {
 
     let data2 = await new Promise (peticion => {db.getConnection( (err, connection) => {
       if (err) throw err;
+      console.log('Conexion establecida');
       connection.query(sql_search_2, (err, rows) => {
         if (err) throw err;
         if (rows.length > 0) {
           var resultado = rows;
-          telefono = resultado[0].telefono;
-          direccion = resultado[0].direccion;
-          departamento = resultado[0].departamento;
-          ciudad = resultado[0].ciudad;
-          estado_civil = resultado[0].Estado_civil;
-          estrato = resultado[0].Estrato_economico;
-          ocupacion = resultado[0].Ocupacion;
-          Regimen_Perteneciente = resultado[0].Regimen_Perteneciente;
-          fecha_de_nacimiento = resultado[0].fecha_de_nacimiento;
+          telefono = resultado[0].DU_telefono;
+          direccion = resultado[0].DU_direccion;
+          departamento = resultado[0].DU_departamento;
+          ciudad = resultado[0].DU_ciudad;
+          estado_civil = resultado[0].DU_Estado_civil;
+          estrato = resultado[0].DU_Estrato_economico;
+          ocupacion = resultado[0].DU_Ocupacion;
+          Regimen_Perteneciente = resultado[0].DU_Regimen_Perteneciente;
+          fecha_de_nacimiento = resultado[0].DU_fecha_de_nacimiento;
           peticion({
             telefono : telefono,
             direccion : direccion,
@@ -259,11 +315,12 @@ app.get('/dashboard', async (req, res) => {
 
 app.post('/dashboard', async (req, res)=>{
 
-  let consulta = (columna, valor, id) =>{
-    let query = `UPDATE datos_usuario SET ${columna} = ${valor} WHERE num_documento = ${id};`;
+  let consulta = (columna, valor, id, tabla, key) =>{
+    let query = `UPDATE ${tabla} SET ${columna} = ${valor} WHERE ${key} = ${id};`;
     let sql_search = mysql.format(query);
     db.getConnection( (err, connection) => {
       if (err) throw err;
+      console.log('Conexion establecida');
       connection.query(sql_search, (err, rows) => {
         if (err) throw err;
         if (rows.length > 0) {
@@ -279,24 +336,28 @@ app.post('/dashboard', async (req, res)=>{
   let data_json = JSON.parse(data_file);
   let id = data_json.id;
 
-  let data_form = [['telefono',data_post.Telefono],['direccion',data_post.direccion],['departamento', data_post.departamento],
-                  ['ciudad', data_post.ciudad],['estado_civil', data_post.estado_civil],['estrato', data_post.estrato],
-                  ['ocupacion', data_post.ocupacion],['Regimen_Perteneciente', data_post.Regimen_Perteneciente],
-                  ['fecha_de_nacimiento', data_post.fecha_nacimiento],
-                  ['tipo_de_documento', data_json.tipo_documento],
-                  ['email', data_json.email],['contraseña', data_json.password[0]]];
+  let data_form = [['DU_telefono',data_post.Telefono],['DU_direccion',data_post.direccion],['DU_departamento', data_post.departamento],
+                  ['DU_ciudad', data_post.ciudad],['DU_Estado_civil', data_post.estado_civil],['DU_Estrato_economico', data_post.estrato],
+                  ['DU_Ocupacion', data_post.ocupacion],['DU_Regimen_Perteneciente', data_post.Regimen_Perteneciente],
+                  ['DU_fecha_de_nacimiento', data_post.fecha_nacimiento]];
+  let data_form_r = [['R_tipo_de_documento', data_json.tipo_documento],
+                  ['R_email', data_json.email],['R_contraseña', data_json.password[0]]];
 
 
-  let query = `SELECT * from datos_usuario WHERE num_documento = ${id} ;`;
+  let query = `SELECT * from datos_usuario WHERE DU_num_documento = ${id} ;`;
   let data_db = await new Promise (peticion =>{
     db.getConnection((err, conection) => {
       if (err) throw err;
+      console.log('Conexion establecida');
       conection.query(query, (err, rows) =>{
         if (err) throw err;
         if(rows.length > 0){
           peticion(rows)
         }
       })})})
+  
+  console.log(data_db);
+  console.log(data_post);
 
   data_form.map(element =>{
     let row = element[0];
@@ -304,23 +365,26 @@ app.post('/dashboard', async (req, res)=>{
     let db_value = data_db[0][row];
 
     if(value !== db_value ){
-      /* TERMINAR */
+      consulta(row, value, id, 'datos_usuario', 'DU_num_documento');
+      console.log('Datos actualizados en datos_usuario');
+    }
+  })
+
+  data_form_r.map(element =>{
+    let row = element[0];
+    let value = element[1];
+    let db_value = data_db[0][row];
+
+    console.log(row, ' ', db_value);
+
+    if(value !== db_value ){
+      /*consulta(row, value, id, 'registro', 'R_num_documento');
+      console.log('Datos actualizados en datos_registro');*/
     }
   })
 
 
-  console.log(data_db);
-  console.log(data_post);
-
-
   res.redirect('/dashboard');
-});
-
-app.get('/dashboard/data', (req, res) => {
-  let data = fs.readFileSync('data/datos_dash.json');
-  let data_json = JSON.parse(data);
-  console.log('Data request');  
-  res.send(data_json);
 });
 
 // 404
