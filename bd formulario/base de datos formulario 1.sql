@@ -13,12 +13,12 @@ create table registro ( R_num_documento int  primary key auto_increment not null
                         R_tipo_de_documento varchar (50) not null);
 
 create table datos_usuario (DU_num_documento int primary key,
-									 DU_telefono int(10),
+							DU_telefono varchar(10),
                             DU_direccion varchar (50) not null,
                             DU_departamento varchar(50) not null,
                             DU_ciudad varchar(50) not null,
                             DU_Estado_civil varchar(40) not null,
-                            DU_Estrato_economico int(1) not null,
+                            DU_Estrato_economico varchar(1) not null,
                             DU_Ocupacion varchar(30) not null,
                             DU_Regimen_Perteneciente varchar(50) not null,
 									 DU_fecha_de_nacimiento date not null,

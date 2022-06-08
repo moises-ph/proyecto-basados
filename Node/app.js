@@ -269,7 +269,8 @@ app.get('/dashboard', async (req, res) => {
           estrato = resultado[0].DU_Estrato_economico;
           ocupacion = resultado[0].DU_Ocupacion;
           Regimen_Perteneciente = resultado[0].DU_Regimen_Perteneciente;
-          fecha_de_nacimiento = resultado[0].DU_fecha_de_nacimiento;
+          fecha_de_nacimiento = resultado[0].fecha_de_nacimiento;
+          console.log(rows);
           peticion({
             telefono : telefono,
             direccion : direccion,
@@ -335,13 +336,16 @@ app.post('/dashboard', async (req, res)=>{
   let data_file = fs.readFileSync('data/datos_sesion.json');
   let data_json = JSON.parse(data_file);
   let id = data_json.id;
+  console.log(data_post);
 
-  let data_form = [['DU_telefono',data_post.Telefono],['DU_direccion',data_post.direccion],['DU_departamento', data_post.departamento],
-                  ['DU_ciudad', data_post.ciudad],['DU_Estado_civil', data_post.estado_civil],['DU_Estrato_economico', data_post.estrato],
-                  ['DU_Ocupacion', data_post.ocupacion],['DU_Regimen_Perteneciente', data_post.Regimen_Perteneciente],
+  if(data_post.fecha_de_nacimiento === ''){data_post.fecha_de_nacimiento = '0000-00-00';}
+
+  let data_form = [['DU_telefono',data_post.Telefono],['DU_direccion',data_post.Direccion],['DU_departamento', data_post.Departamento],
+                  ['DU_ciudad', data_post.Ciudad],['DU_Estado_civil', data_post.EstadoCivil],['DU_Estrato_economico', data_post.estrato],
+                  ['DU_Ocupacion', data_post.ocupacion],['DU_Regimen_Perteneciente', data_post.regimenPerteneciente],
                   ['DU_fecha_de_nacimiento', data_post.fecha_nacimiento]];
   let data_form_r = [['R_tipo_de_documento', data_json.tipo_documento],
-                  ['R_email', data_json.email],['R_contraseña', data_json.password[0]]];
+                  ['R_email', data_json.email],['R_contraseña', data_json.password]];
 
 
   let query = `SELECT * from datos_usuario WHERE DU_num_documento = ${id} ;`;
@@ -349,26 +353,33 @@ app.post('/dashboard', async (req, res)=>{
     db.getConnection((err, conection) => {
       if (err) throw err;
       console.log('Conexion establecida');
-      conection.query(query, (err, rows) =>{
+      conection.query(mysql.format(query), (err, rows) =>{
         if (err) throw err;
         if(rows.length > 0){
           peticion(rows)
         }
       })})})
-  
-  console.log(data_db);
-  console.log(data_post);
+      
+  let db_value = data_db[0];
 
   data_form.map(element =>{
     let row = element[0];
-    let value = element[1];
-    let db_value = data_db[0][row];
+    let value = element[1];    
+    let db_data = db_value[row];
 
-    if(value !== db_value ){
-      consulta(row, value, id, 'datos_usuario', 'DU_num_documento');
-      console.log('Datos actualizados en datos_usuario');
-    }
-  })
+    if(value !== db_data ){
+      if(value === ''){
+        value = '"none"';
+        consulta(row, value, id, 'datos_usuario', 'DU_num_documento');
+        console.log('Datos actualizados en datos_usuario');
+      }
+      else{
+        value = `"${value}"`;
+        consulta(row, value, id, 'datos_usuario', 'DU_num_documento');
+        console.log('Datos actualizados en datos_usuario');
+        }
+      }
+    })
 
   data_form_r.map(element =>{
     let row = element[0];
