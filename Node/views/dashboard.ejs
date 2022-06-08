@@ -117,5 +117,11 @@
     </div>
   <% } %>
 
+  <% if (success) { %>
+    <div class="success">
+      <p><%= success %> </p>
+    </div>
+  <% } %>
+
 <span id="data" style="visibility: hidden;"><%= data %> </span>
 <%- include('template/footer', {script : '/dashboard/dash.js'}) %>

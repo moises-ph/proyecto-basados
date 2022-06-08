@@ -368,15 +368,10 @@ app.post('/dashboard', async (req, res)=>{
     let db_data = db_value[row];
 
     if(value !== db_data ){
-      if(value === ''){
-        value = '"none"';
-        consulta(row, value, id, 'datos_usuario', 'DU_num_documento');
-        console.log('Datos actualizados en datos_usuario');
-      }
-      else{
-        value = `"${value}"`;
-        consulta(row, value, id, 'datos_usuario', 'DU_num_documento');
-        console.log('Datos actualizados en datos_usuario');
+        if(value !== ''){
+          value = `"${value}"`;
+          consulta(row, value, id, 'datos_usuario', 'DU_num_documento');
+          console.log('Datos actualizados en datos_usuario');
         }
       }
     })
@@ -389,13 +384,14 @@ app.post('/dashboard', async (req, res)=>{
     console.log(row, ' ', db_value);
 
     if(value !== db_value ){
-      /*consulta(row, value, id, 'registro', 'R_num_documento');
-      console.log('Datos actualizados en datos_registro');*/
+      if(value !== ''){
+        value = `"${value}"`;
+        consulta(row, value, id, 'datos_registro', 'R_num_documento');
+      }
     }
   })
 
-
-  res.redirect('/dashboard');
+  res.redirect('/dashboard', {success : 'Datos actualizados'});
 });
 
 // 404
