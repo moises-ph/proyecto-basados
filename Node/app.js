@@ -13,7 +13,7 @@ const db =  mysql.createPool({
   connectionLimit: 100,
   host: 'localhost',
   user: 'root',
-  password: 'root',
+  password: 'Mphr_2015',
   database: 'registro_BD',
   port : 3306
 });
@@ -191,7 +191,7 @@ app.post('/registro', (req, res) => {
         })
 
         let sql_datos_basicos = 'INSERT INTO datos_usuario(DU_num_documento, DU_telefono, DU_direccion, DU_departamento, DU_ciudad, DU_Estado_civil, DU_Estrato_economico, DU_Ocupacion, DU_Regimen_Perteneciente, DU_fecha_de_nacimiento) values (?,?,?,?,?,?,?,?,?,?);';
-        let query_datos_basicos = mysql.format(sql_datos_basicos, [documento, 0, 'none', 'none', 'none', 'none', 0, 'none', 'none', '2000-01-01']);
+        let query_datos_basicos = mysql.format(sql_datos_basicos, [documento, 0, 'none', 'none', 'none', 'none', 0, 'none', 'none', '0000-00-00']);
         connection.query(query_datos_basicos, (err, result) => {
           if (err) throw err;
           console.log('Datos basicos registrados');
@@ -307,7 +307,7 @@ app.get('/dashboard', async (req, res) => {
     console.log(data_entire);
     var data_rs = JSON.stringify(data_entire);
 
-    res.render('dashboard', {error : '', data : data_rs});
+    res.render('dashboard', {error : '', data : data_rs, succes: ''});
   }
   else{
     res.render('login', {error : 'Inicie sesión para ingresar al dashboard', mensaje: ''});
