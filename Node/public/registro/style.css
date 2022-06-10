@@ -47,6 +47,21 @@ body{
     background-image: linear-gradient( to bottom,#7346C5, #2F2163 );
 }
 
+.ingreso{
+    margin-top: 10px;
+    border-radius: 2px;
+    color: #fff;
+    background-image: linear-gradient( to bottom,#7346C5, #2F2163 );
+    font-size: 0.9rem;
+    padding: 3px;
+    margin-bottom: 5px;
+    text-decoration: none;
+}
+
+.ingreso:hover{
+    background-image: linear-gradient( to bottom,#641de7, #170d3d );
+}
+
 h3{
     color: white; 
 }

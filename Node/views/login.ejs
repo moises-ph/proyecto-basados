@@ -16,14 +16,15 @@
 
         <!-- ingreso-->
         <input type="submit" id="submit" value="Ingresar" class="submit" >
-        
+        <div id="error"><%= error %></div>
+        <div id="mensaje"><%= mensaje %></div>
         <a href="#" class="link"> Olvidaste tu Contraseña?</a>
 
         <a href="/registro" class="link"> No tienes una cuenta?</a>
     </form>
   </div>
-  <div id="error"><%= error %></div>
-  <div id="mensaje"><%= mensaje %></div>
+  
+  
   <% if (error == '' && mensaje == '') { %>
     <script>
       document.getElementById("error").style.visibility = "hidden";
