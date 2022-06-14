@@ -1,3 +1,4 @@
+//llamando librerias
 const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
@@ -336,12 +337,12 @@ app.post('/dashboard', async (req, res)=>{
   let data_json = JSON.parse(data_file);
   let id = data_json.id;
 
-  let data_form = [['DU_telefono',data_post.Telefono],['DU_direccion',data_post.direccion],['DU_departamento', data_post.departamento],
-                  ['DU_ciudad', data_post.ciudad],['DU_Estado_civil', data_post.estado_civil],['DU_Estrato_economico', data_post.estrato],
-                  ['DU_Ocupacion', data_post.ocupacion],['DU_Regimen_Perteneciente', data_post.Regimen_Perteneciente],
-                  ['DU_fecha_de_nacimiento', data_post.fecha_nacimiento]];
+  let data_form = [['DU_telefono',data_post.Telefono],['DU_direccion'," ' "+ data_post.direccion +" ' "],['DU_departamento',"'"+ data_post.Departamento+"'"],
+                  ['DU_ciudad',"'"+ data_post.Ciudad+"'"],['DU_Estado_civil',"'"+ data_post.estado_civil+"'"],['DU_Estrato_economico',"'"+ data_post.estrato+"'"],
+                  ['DU_Ocupacion',"'"+ data_post.ocupacion+"'"],['DU_Regimen_Perteneciente',"'"+ data_post.Regimen_Perteneciente+"'"],
+                  ['DU_fecha_de_nacimiento',"'"+ data_post.fecha_nacimiento+"'"]];
   let data_form_r = [['R_tipo_de_documento', data_json.tipo_documento],
-                  ['R_email', data_json.email],['R_contraseña', data_json.password[0]]];
+                  ['R_email', data_json.email],['R_contraseña', data_json.password]]
 
 
   let query = `SELECT * from datos_usuario WHERE DU_num_documento = ${id} ;`;
