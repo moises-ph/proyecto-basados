@@ -4,8 +4,6 @@ const fs = require('fs');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 
-const app = express();
-app.use(bodyParser.urlencoded({extended: false}));
 
 const db =  mysql.createPool({
     connectionLimit: 100,
@@ -22,24 +20,25 @@ db.getConnection((err, connection) => {
 })
 
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
     let data_null_tmp ={
     'id': 0,
     'estado': 'inactivo'
     }
     let data_null = JSON.stringify(data_null_tmp);
     fs.writeFileSync('data/datos_sesion.json', data_null, (error)=>{
-            if(error){
-                console.log(error);
-            }
-            else{
-                console.log('Archivo editado a 0');
-            }
-            });
+        if(error){
+            console.log(error);
+        }
+        else{
+            console.log('Archivo editado a 0');
+        }});
+    next();
+}, (req,res) => {
     res.render('registro', {error : '', mensaje: ''});
 }) 
 
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
     let data_null_tmp ={
     'id': 0,
     'estado': 'inactivo'
@@ -68,7 +67,7 @@ router.post('/', (req, res) => {
     if (err) throw err;
     console.log('Conexion establecida');
 
-      const sql_search = "SELECT * FROM registro WHERE R_num_documento = ?;"
+    const sql_search = "SELECT * FROM registro WHERE R_num_documento = ?;"
     const search_sql = mysql.format(sql_search, [documento]);
     
     const sql_insert = "INSERT INTO registro(R_num_documento,R_nombres, R_apellidos, R_edad, R_genero, R_email, R_contraseña, R_tipo_de_usuario, R_tipo_de_documento) VALUES (?,?,?,?,?,?,?,?,?);"
@@ -77,8 +76,8 @@ router.post('/', (req, res) => {
     connection.query( search_sql,  (err, result) => {
         if (err) throw err;
         if (result.length > 0) {
-        console.log('Usuario ya registrado');
-        res.render('registro', {error : 'Usuario ya registrado', mensaje: ''});
+            console.log('Usuario ya registrado');
+            res.render('registro', {error : 'Usuario ya registrado', mensaje: ''});
         }
         else {
         connection.query(query_sql, (err, result) => {
@@ -96,6 +95,8 @@ router.post('/', (req, res) => {
         }
     })
     })
+}, (req,res) => {
+    res.render("registro", {error : '', mensaje: ''});
 })
 
 

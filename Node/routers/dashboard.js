@@ -4,8 +4,6 @@ const fs = require('fs');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 
-const app = express();
-app.use(bodyParser.urlencoded({extended: false}));
 
 const db =  mysql.createPool({
     connectionLimit: 100,
@@ -87,7 +85,8 @@ router.get('/', async (req, res) => {
                 estrato = resultado[0].DU_Estrato_economico;
                 ocupacion = resultado[0].DU_Ocupacion;
                 Regimen_Perteneciente = resultado[0].DU_Regimen_Perteneciente;
-                fecha_de_nacimiento = resultado[0].DU_fecha_de_nacimiento;
+                fecha_de_nacimiento = resultado[0].fecha_de_nacimiento;
+                console.log(fecha_de_nacimiento);
             peticion({
                 telefono : telefono,
                 direccion : direccion,
@@ -127,25 +126,25 @@ router.get('/', async (req, res) => {
         res.render('dashboard', {error : '', data : data_rs});
     }
     else{
-        res.redirect('/login', {error : 'Inicie sesión'});
+        res.redirect('/login');
     }
 })
 
-router.post('/', async (req, res)=>{
+router.post('/', async (req, res, next)=>{
 
     let consulta = (columna, valor, id, tabla, key) =>{
-    let query = `UPDATE ${tabla} SET ${columna} = ${valor} WHERE ${key} = ${id};`;
-    let sql_search = mysql.format(query);
-    db.getConnection( (err, connection) => {
-        if (err) throw err;
-        console.log('Conexion establecida');
-        connection.query(sql_search, (err, rows) => {
-        if (err) throw err;
-        if (rows.length > 0) {
-            console.log('Datos actualizados');
-        }
+        let query = `UPDATE ${tabla} SET ${columna} = ${valor} WHERE ${key} = ${id};`;
+        let sql_search = mysql.format(query);
+        db.getConnection( (err, connection) => {
+            if (err) throw err;
+            console.log('Conexion establecida');
+            connection.query(sql_search, (err, rows) => {
+            if (err) throw err;
+            if (rows.length > 0) {
+                console.log('Datos actualizados');
+            }
+            })
         })
-    })
     }
 
     console.log('POST /dashboard');
@@ -164,14 +163,14 @@ router.post('/', async (req, res)=>{
 
     let query = `SELECT * from datos_usuario WHERE DU_num_documento = ${id} ;`;
     let data_db = await new Promise (peticion =>{
-    db.getConnection((err, conection) => {
-        if (err) throw err;
-        console.log('Conexion establecida');
-        conection.query(query, (err, rows) =>{
-        if (err) throw err;
-        if(rows.length > 0){
-            peticion(rows)
-        }
+        db.getConnection((err, conection) => {
+            if (err) throw err;
+            console.log('Conexion establecida');
+            conection.query(query, (err, rows) =>{
+            if (err) throw err;
+            if(rows.length > 0){
+                peticion(rows)
+            }
         })})})
     
     console.log(data_db);
@@ -182,21 +181,13 @@ router.post('/', async (req, res)=>{
     let value = element[1];
     let db_value = data_db[0][row];
 
-    if(value !== db_value ){
-        consulta(row, value, id, 'datos_usuario', 'DU_num_documento');
-        console.log('Datos actualizados en datos_usuario');
-    }
+    consulta(row, value, id, 'datos_usuario', 'DU_num_documento');
+
     })
 
-    data_form_r.map(element =>{
-    let row = element[0];
-    let value = element[1];
-    let db_value = data_db[0][row];
-
-    console.log(row, ' ', db_value);
-    })
-
-    res.redirect('/dashboard');
+    next({error : ''});
+}, (req,res, mensaje_s)=>{
+    res.redirect('/dashboard', {error : mensaje_s.error});
 });
 
 

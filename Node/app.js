@@ -1,8 +1,11 @@
 //llamando libraries
 const express = require('express');
+const bodyParser = require('body-parser');
 
 const app = express();
 const port = 3000 || process.env.PORT;
+
+app.use(bodyParser.urlencoded({extended: false}));
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');

@@ -4,8 +4,6 @@ const fs = require('fs');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 
-const app = express();
-app.use(bodyParser.urlencoded({extended: false}));
 
 const db =  mysql.createPool({
     connectionLimit: 100,
@@ -91,17 +89,18 @@ router.post('/', (req, res, next) => {
             }
             else{
                 console.log('Contraseña incorrecta');
-                next( {error : 'Contraseña incorrecta', mensaje: ''});
+                next( JSON.stringify({error : 'Contraseña incorrecta', mensaje: ''}));
             }
         }
         else {
-            res.render('login', {error : 'Usuario no registrado', mensaje: ''});
+            next(  JSON.stringify({error : 'Usuario no registrado', mensaje: ''}));
             console.log('Usuario no registrado');
         }
     })
     })
 }, (req,res, mensaje_s) => {
-    res.render('login', mensaje_s);
+    JSON.parse(mensaje_s);
+    res.render('login', {error : mensaje_s.error, mensaje: mensaje_s.mensaje});
 })
 
 module.exports = router;
