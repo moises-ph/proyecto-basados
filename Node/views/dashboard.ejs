@@ -1,5 +1,8 @@
 <%- include('template/header', {titulo : 'Dashboard', css : '/dashboard/datos_basicos.css'}); %>
-  <h1>Datos básicos</h1>
+  <nav>
+    <h1>Datos básicos</h1>
+    <button id="cerrar_sesion">Cerrar sesión</button>
+  </nav>
   <form class="formulario" id="form" name="Formulario-datosbasicos-lgd" action="/dashboard" method="POST">
     <div class="reform">
     <label for="nombre-lock">Nombre: 
@@ -36,7 +39,7 @@
         <option value="Salvoconducto">Salvoconducto</option>
         <option value="Tarjeta de identidad">Tarjeta de identidad</option>
       </select>
-      <input type="number" placeholder="Numero de documento de identidad" maxlength="10" id='documento-id' value="Documento" disabled>
+      <input type="text" placeholder="Numero de documento de identidad" maxlength="10" id='documento-id' value="Documento" disabled>
     </label>
 
     <label>Telefono:
@@ -105,7 +108,7 @@
       
       <label for="contraseña">Contraseña: 
         <input type="password" placeholder="Contraseña" class="input" name="password" id="contraseña">
-        <input type="password" placeholder="Confirmar Contraseña" class="input" name="password" id="contraseña-con">
+        <input type="password" placeholder="Confirmar Contraseña" class="input" name="password-con" id="contraseña-con">
       </label>
     </div>
     <input type="submit" class="submit" value="Guardar" id="enviar">

@@ -4,11 +4,29 @@
   user-select: none;
 }
 
+nav{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  background-color: #6A33A1;
+  z-index: 2;
+  height: 2%;
+}
+
+nav button{
+  background-color: #6A33A1;
+  border: none;
+  color: white;
+  padding: 10px;
+  font-size: 1.2em;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 h1{
   background-color: #6A33A1;
   width: auto;
-  margin-top: 0;
-  margin-right: 0;
   color: white;
   padding-left: 20px;
 }

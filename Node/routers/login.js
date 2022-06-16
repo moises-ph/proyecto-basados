@@ -1,10 +1,10 @@
-var express = require('express');
-var router = express.Router();
-const fs = require('fs');
-const mysql = require('mysql');
-const bodyParser = require('body-parser');
+// Calling libraries
+const express = require('express'); // Express web server framework
+const router = express.Router(); // Express router
+const fs = require('fs'); // File system library
+const mysql = require('mysql'); // MySQL library
 
-
+// Connect to database
 const db =  mysql.createPool({
     connectionLimit: 100,
     host: 'localhost',
@@ -14,18 +14,19 @@ const db =  mysql.createPool({
     port : 3306
 });
 
+// Get connection from database
 db.getConnection((err, connection) => {
     if (err) throw err;
     console.log('Base de datos conectada');
 })
 
-router.get('/', (req, res, next) => {
+router.get('/', (req, res, next) => { // Get login page
     let data_null_tmp ={
         'id': 0,
         'estado': 'inactivo'
-    }
-    let data_null = JSON.stringify(data_null_tmp);
-    fs.writeFileSync('data/datos_sesion.json', data_null, (error)=>{
+    } // Create data to send
+    let data_null = JSON.stringify(data_null_tmp); // Parse data to JSON
+    fs.writeFileSync('data/datos_sesion.json', data_null, (error)=>{ // Write data to file
         if(error){
             console.log(error);
         }
@@ -33,19 +34,19 @@ router.get('/', (req, res, next) => {
             console.log('Archivo editado a 0');
         }});
     console.log('GET /login');
-    next();
+    next(); // Next function
 }, (req,res) => {
-    res.render('login', {error : '', mensaje: ''});
+    res.render('login', {error : '', mensaje: ''}); // Render login page
 })
 
-router.post('/', (req, res, next) => {
+router.post('/', (req, res, next) => { // Post login page
     console.log('POST /login');
-    let data_null_tmp ={
+    let data_null_tmp ={ // Create data to send
     'id': 0,
     'estado': 'inactivo'
     }
-    let data_null = JSON.stringify(data_null_tmp);
-    fs.writeFileSync('data/datos_sesion.json', data_null, (error)=>{
+    let data_null = JSON.stringify(data_null_tmp); // Parse data to JSON
+    fs.writeFileSync('data/datos_sesion.json', data_null, (error)=>{ // Write data to file
             if(error){
                 console.log(error);
             }
@@ -53,29 +54,29 @@ router.post('/', (req, res, next) => {
                 console.log('Archivo editado a 0');
             }
             });
-    const id_usuario = parseInt(req.body.documento_id);
-    const password = req.body.Contraseña;
+    const id_usuario = parseInt(req.body.documento_id); // Get id from form
+    const password = req.body.Contraseña; // Get password from form
 
-    let sql_search = `SELECT * FROM registro WHERE R_num_documento = ${id_usuario};`;
+    let sql_search = `SELECT * FROM registro WHERE R_num_documento = ${id_usuario};`; // Format query
     
-    let query = mysql.format(sql_search);
+    let query = mysql.format(sql_search); // Format query
     console.log(query);
-    db.getConnection((err, connection) => {
+    db.getConnection((err, connection) => { // Get connection from database
     if (err) throw err;
     console.log('Conexion establecida');
-    connection.query(query, (err, rows) => {
+    connection.query(query, (err, rows) => {    // Query database
         if (err) throw err;
-        if (rows.length > 0) {
+        if (rows.length > 0) { // If user exists
             var resultado = rows;
             console.log(resultado);
-            if(resultado[0].R_contraseña == password){
+            if(resultado[0].R_contraseña == password){ // Check if password is correct
 
                 let data_temp = {
                 'id' : id_usuario,
                 'estado' : 'activo'
-                }
-                let data = JSON.stringify(data_temp);
-                fs.writeFileSync('data/datos_sesion.json', data, (error)=>{
+                } // Create data to send (id and status are active now) 
+                let data = JSON.stringify(data_temp); // Parse data to JSON
+                fs.writeFileSync('data/datos_sesion.json', data, (error)=>{ // Write data to file
                 if(error){
                     console.log(error);
                 }
@@ -84,23 +85,23 @@ router.post('/', (req, res, next) => {
                 }
                 });
 
-                res.redirect('/dashboard/');
+                res.redirect('/dashboard/'); // Redirect to dashboard 
                 console.log('Contraseña correcta, redireccionando a la pagina principal');
             }
-            else{
-                console.log('Contraseña incorrecta');
-                next( JSON.stringify({error : 'Contraseña incorrecta', mensaje: ''}));
+            else{ // If password is incorrect
+                console.log('Contraseña incorrecta'); 
+                res.render('login', { error:'Contraseña Incorrecta', mensaje: 'Intente de nuevo'}) // Send error, password is incorrect
             }
         }
         else {
-            next(  JSON.stringify({error : 'Usuario no registrado', mensaje: ''}));
+            res.render('login', {error : 'Usuario No registrado', mensaje: 'Regístrece abajo'}) // Send error if user doesn't exist
             console.log('Usuario no registrado');
         }
     })
     })
 }, (req,res, mensaje_s) => {
     JSON.parse(mensaje_s);
-    res.render('login', {error : mensaje_s.error, mensaje: mensaje_s.mensaje});
+    res.render('login', {error : mensaje_s.error, mensaje: mensaje_s.mensaje}); // Render login page
 })
 
-module.exports = router;
+module.exports = router; // Export router

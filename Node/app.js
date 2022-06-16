@@ -1,34 +1,42 @@
-//llamando libraries
-const express = require('express');
-const bodyParser = require('body-parser');
+//Calling libraries
+const express = require('express'); // Express web server framework
+const bodyParser = require('body-parser'); // Parses the body of the request
+
+// Starting express app
 
 const app = express();
 const port = 3000 || process.env.PORT;
 
+// Middleware
+
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs'); // set up ejs for templating
+app.set('views', __dirname + '/views'); // set up views directory
 
-app.use(express.static( __dirname + '/public'));
+app.use(express.static( __dirname + '/public')); // set up public directory for css and js files
 
 app.get('/', (req, res) => {
   res.render('index');
-});
+}); // render the index.ejs file
 
-// LOGIN
+// LOGIN ROUTE
 
-app.use('/login', require('./routers/login'));
+app.use('/login', require('./routers/login')); // use the login router
 
-// REGISTER
+// REGISTER ROUTE
 
-app.use('/register', require('./routers/register'));
+app.use('/register', require('./routers/register')); // register route
 
-// DASHBOARD
+// DASHBOARD ROUTE
 
-app.use('/dashboard', require('./routers/dashboard'));
+app.use('/dashboard', require('./routers/dashboard')); // import the router for the dashboard
 
-// 404
+// Recovery ROUTE
+
+app.use('/recovery', require('./routers/recovery')); // import the router for the recovery
+
+// 404 ROUTE
 app.use((req, res, next) => {
   res.status(404).render("404", {url : req.url});
 });

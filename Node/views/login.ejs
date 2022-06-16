@@ -11,14 +11,14 @@
         <input id="Usuario_login" class="input" type="text" name="documento_id" placeholder="Ingrese su documento de identidad " required>
         
         <!-- password -->
-        <label for="Contraseña">password</label>
+        <label for="Contraseña">Contraseña</label>
         <input id="Contraseña_login" class="input" type="password" name="Contraseña" placeholder="Ingrese su Contraseña" required>
 
         <!-- ingreso-->
         <input type="submit" id="submit" value="Ingresar" class="submit" >
         <div id="error"><%= error %></div>
         <div id="mensaje"><%= mensaje %></div>
-        <a href="#" class="link"> Olvidaste tu Contraseña?</a>
+        <a href="/recovery" class="link"> Olvidaste tu Contraseña?</a>
 
         <a href="/register" class="link"> No tienes una cuenta?</a>
     </form>
@@ -31,15 +31,21 @@
       document.getElementById("mensaje").style.visibility = "hidden";
     </script>
   <% } %>
-  <% if (error != '') { %>
+  <% if (error != '' && mensaje == '') { %>
     <script>
       document.getElementById("error").style.visibility = "visible";
       document.getElementById("mensaje").style.visibility = "hidden";
     </script>
   <% } %>
-  <% if (mensaje != '') { %>
+  <% if (mensaje != '' && error == '') { %>
     <script>
       document.getElementById("error").style.visibility = "hidden";
+      document.getElementById("mensaje").style.visibility = "visible";
+    </script>
+  <% } %>
+  <% if (mensaje != '' && error != '') { %>
+    <script>
+      document.getElementById("error").style.visibility = "visible";
       document.getElementById("mensaje").style.visibility = "visible";
     </script>
   <% } %>

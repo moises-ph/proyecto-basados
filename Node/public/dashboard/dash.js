@@ -12,11 +12,30 @@ ids_data.map(value => {
         document.getElementById(value[0]).value = value[1];
     }
 })
+let email = document.getElementById('email');
+let email_con = document.getElementById('email-con');
 
+let contraseña = document.getElementById('contraseña');
+let contraseña_con = document.getElementById('contraseña-con');
 
 var form = document.getElementById('form');
 form.addEventListener('submit', (e) => {
     e.preventDefault();
-    var data = e.path[0].elements;
-    console.log(data);
+    if(email.value != '' && email_con.value != '' && contraseña.value != '' && contraseña_con.value != ''){
+        if(email.value == email_con.value && contraseña.value == contraseña_con.value){
+            form.submit();
+        }
+        else{
+            alert('Los datos no coinciden');
+        }
+    }
+    else{
+        form.submit();
+    }
+});
+
+var boton_cerrar_sesion = document.getElementById('cerrar_sesion');
+
+boton_cerrar_sesion.addEventListener('click', (e) => {
+    window.location.href = '/login';
 })

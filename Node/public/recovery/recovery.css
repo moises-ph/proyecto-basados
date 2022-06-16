@@ -1,0 +1,90 @@
+*{
+    font-family: 'Noto Sans', sans-serif;
+    user-select: none;
+}
+
+.error{
+    visibility: hidden;
+}
+
+body{
+    background-image: url("/login/LLUVIA.jpg");
+    background-size: auto;
+    height: 100%;
+    background-repeat:no-repeat;
+    display: flex;
+    justify-content: center;
+}
+
+.formulario{
+    width: 50vw;
+    height: 80vh;
+    border-radius: 20px;
+    padding-right: 10px;
+    margin-top: 2%;
+    display: grid;
+    grid-template-columns: repeat(2, 0.9fr);
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    background-color: #C1C7C4;
+    box-shadow: 4px 4px 4px 4px rgba(44, 44, 44, 0.719);
+}
+
+.input{
+    outline: none;
+    background-color: #C1C7C4;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    width: 80%;
+}
+
+.submit{
+    margin-bottom: 5px;
+    color: white;
+    font-weight: 800;
+    background-color: #212243;
+}
+
+.submit:hover{
+    background-color: #15152c;
+}
+
+.link{
+    margin-top: 10px;
+    border-radius: 2px;
+    color: #fff;
+    background-image: linear-gradient( to bottom,#7346C5, #2F2163 );
+    font-size: 0.9rem;
+    padding: 3px;
+    margin-bottom: 5px;
+    text-decoration: none;
+
+}
+.link:hover{
+    background-image: linear-gradient( to bottom,#641de7, #170d3d );
+}
+
+.form{
+    width: 80%;
+    height: 75%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    justify-self: center;
+    text-align: center;
+}
+
+#cabecera{
+    color: white;
+    margin-right: 15px;
+    border-radius: 20px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient( to bottom,#7346C5, #2F2163 ); 
+}
