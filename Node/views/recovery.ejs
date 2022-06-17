@@ -11,13 +11,18 @@
         <input class='input' id="contraseña_con" class="input" type="password" name="contraseña-con" placeholder="Confirme su Contraseña" required>
         <input type="submit" id="submit" value="Enviar" class="submit" >
         <a class="link">Volver al Login</a>
+        <div class="error"> <%= error %>  </div>
     </form>
 </div>
 
-<% if (error != '') { %>
-    <div class="error">
-        <%- error %>
-    </div>
+<% if (error == '') { %>
+    <script>
+        document.getElementsByClassName('error').style.visibility = "hidden";
+    </script>
+<% } else { %>
+    <script>
+        document.getElementsByClassName('error').style.visibility = "visible";
+    </script>
 <% } %>
 
 <%- include('template/footer', {script : '/recovery/recovery.js'}) %>
