@@ -1,0 +1,21 @@
+{
+    "datos_usuario" : {
+		"num_documento": "",
+		"telefono": "",
+		"direccion": "",
+		"departamento": "",
+		"ciudad": "",
+		"estado_civil": "",
+		"estrato_economico": "",
+		"ocupacion" :"",
+		"regimen_perteneciente":"",
+		"fecha_de_nacimiento": "" 
+	},
+    "acciones_datos" :{
+		"identidad": "",
+		"usuario": "",
+		"documento_identificacion": "",
+		"accion": "",
+		"fecha":""
+	}
+}

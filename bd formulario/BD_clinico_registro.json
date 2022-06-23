@@ -1,0 +1,20 @@
+{
+	"registro":{
+		"num_documento": "",
+		"nombres" : "",
+		"apellidos": "",
+		"edad" : "",
+		"genero": "",
+		"email": "",
+		"contraseña": "",
+		"tipo_de_usuario": "",
+		"tipo_de_documento":""
+	},
+	"acciones_registro":{
+		"identidad": "",
+		"usuario": "",
+		"documento_identificacion": "",
+		"accion": "",
+		"fecha": ""
+	}
+}
