@@ -1,8 +1,8 @@
-//Calling libraries
+//  Calling libraries
 const express = require('express'); // Express web server framework
 const bodyParser = require('body-parser'); // Parses the body of the request
 
-// Starting express app
+// // Starting express app
 
 const app = express();
 const port = 3000 || process.env.PORT;
@@ -38,7 +38,7 @@ app.use('/recovery', require('./routers/recovery')); // import the router for th
 
 // 404 ROUTE
 app.use((req, res, next) => {
-  res.status(404).render("404", {url : req.url});
+  res.status(404).render("404", {url : req.url}); // render the 404.ejs file if the url is not found
 });
 
 // SET UP SERVER

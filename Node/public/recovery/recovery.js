@@ -1,15 +1,15 @@
 const form = document.getElementById('recovery-form');
 form.addEventListener('submit', (e) => {
-    e.preventDefault();
+    console.log('POST /recovery');
     let contraseña = e.target.Contraseña_login.value;
     let contraseña_con = e.target.contraseña_con.value;
     let documento_id = e.target.Usuario_login.value;
     if(contraseña != contraseña_con){
+        e.preventDefault();
         alert('Las contraseñas no coinciden');
         return false;
-    };
-    if (documento_id == ''){
-        alert('El campo de usuario esta vacio');
-        return false;
+    }
+    else{
+        return true;
     }
 })

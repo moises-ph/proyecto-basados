@@ -144,69 +144,78 @@ router.get('/', async (req, res) => {
 
 // Dashboard page
 router.post('/', async (req, res, next)=>{
+    let data = fs.readFileSync('data/datos_sesion.json'); // Read data from file
+    let data_json = JSON.parse(data); // Parse data to JSON
+    console.log(data_json);
+    let id = data_json.id; // Get id from data
+    let estado = data_json.estado; // Get estado from data
+    if(estado === 'activo'){
 
-    let consulta = (columna, valor, id, tabla, key) =>{ // Function to search data
-        let query = `UPDATE ${tabla} SET ${columna} = ${valor} WHERE ${key} = ${id};`;
-        let sql_search = mysql.format(query);
-        db.getConnection( (err, connection) => {
-            if (err) throw err;
-            console.log('Conexion establecida');
-            connection.query(sql_search, (err, rows) => {
-            if (err) throw err;
-            if (rows.length > 0) {
-                console.log('Datos actualizados');
-            }
+        let consulta = (columna, valor, id, tabla, key) =>{ // Function to search data
+            let query = `UPDATE ${tabla} SET ${columna} = ${valor} WHERE ${key} = ${id};`;
+            let sql_search = mysql.format(query);
+            db.getConnection( (err, connection) => {
+                if (err) throw err;
+                console.log('Conexion establecida');
+                connection.query(sql_search, (err, rows) => {
+                if (err) throw err;
+                if (rows.length > 0) {
+                    console.log('Datos actualizados');
+                }
+                })
             })
+        }
+
+        console.log('POST /dashboard');
+        let data_post = req.body; // Get data from post
+        let data_file = fs.readFileSync('data/datos_sesion.json'); // Get data from file
+        let data_json = JSON.parse(data_file); // Convert data to json
+        let id = data_json.id; // Get id from data
+
+        let data_form = [['DU_telefono',data_post.Telefono],['DU_direccion'," ' "+ data_post.Direccion +" ' "],['DU_departamento',"'"+ data_post.Departamento+"'"],
+                        ['DU_ciudad',"'"+ data_post.Ciudad+"'"],['DU_Estado_civil',"'"+ data_post.EstadoCivil+"'"],['DU_Estrato_economico',"'"+ data_post.estrato+"'"],
+                        ['DU_Ocupacion',"'"+ data_post.ocupacion+"'"],['DU_Regimen_Perteneciente',"'"+ data_post.regimenPerteneciente+"'"],
+                        ['DU_fecha_de_nacimiento',"'"+ data_post.fecha_nacimiento+"'"]]; // Create data to send to database (array of arrays)
+        let data_form_r = [['R_tipo_de_documento','"' + data_post.tipo_documento + '"'],            // With data from file and names of columns
+                        ['R_email','"' + data_post.email + '"'],['R_contraseña', '"' + data_post.password + '"']] // Same as above but in register table
+
+
+        let query = `SELECT * from datos_usuario WHERE DU_num_documento = ${id} ;`; // Query to search data
+        let data_db = await new Promise (peticion =>{ // Get data from database
+            db.getConnection((err, conection) => { // Connect to database
+                if (err) throw err;
+                console.log('Conexion establecida');
+                conection.query(query, (err, rows) =>{ // Query database
+                if (err) throw err;
+                if(rows.length > 0){
+                    peticion(rows) // Send data to promise
+                }
+            })})})
+        
+        console.log(data_db);
+        console.log(data_post);
+
+        data_form.map(element =>{ // For each element in data_form
+            let row = element[0]; // Get row
+            let value = element[1]; // Get value
+            let db_value = data_db[0][row]; // Get value from database
+
+            consulta(row, value, id, 'datos_usuario', 'DU_num_documento'); // Send data to database
+        });
+
+        data_form_r.map(element =>{
+            console.log(element); // For each element in data_form
+            let row = element[0]; // Get row
+            let value = element[1]; // Get value
+            let db_value = data_db[0][row]; // Get value from database
+            if(value != ""){
+                consulta(row, value, id, 'registro', 'R_num_documento'); // Send data to database
+            }
         })
     }
-
-    console.log('POST /dashboard');
-    let data_post = req.body; // Get data from post
-    let data_file = fs.readFileSync('data/datos_sesion.json'); // Get data from file
-    let data_json = JSON.parse(data_file); // Convert data to json
-    let id = data_json.id; // Get id from data
-
-    let data_form = [['DU_telefono',data_post.Telefono],['DU_direccion'," ' "+ data_post.Direccion +" ' "],['DU_departamento',"'"+ data_post.Departamento+"'"],
-                    ['DU_ciudad',"'"+ data_post.Ciudad+"'"],['DU_Estado_civil',"'"+ data_post.EstadoCivil+"'"],['DU_Estrato_economico',"'"+ data_post.estrato+"'"],
-                    ['DU_Ocupacion',"'"+ data_post.ocupacion+"'"],['DU_Regimen_Perteneciente',"'"+ data_post.regimenPerteneciente+"'"],
-                    ['DU_fecha_de_nacimiento',"'"+ data_post.fecha_nacimiento+"'"]]; // Create data to send to database (array of arrays)
-    let data_form_r = [['R_tipo_de_documento','"' + data_post.tipo_documento + '"'],            // With data from file and names of columns
-                    ['R_email','"' + data_post.email + '"'],['R_contraseña', '"' + data_post.password + '"']] // Same as above but in register table
-
-
-    let query = `SELECT * from datos_usuario WHERE DU_num_documento = ${id} ;`; // Query to search data
-    let data_db = await new Promise (peticion =>{ // Get data from database
-        db.getConnection((err, conection) => { // Connect to database
-            if (err) throw err;
-            console.log('Conexion establecida');
-            conection.query(query, (err, rows) =>{ // Query database
-            if (err) throw err;
-            if(rows.length > 0){
-                peticion(rows) // Send data to promise
-            }
-        })})})
-    
-    console.log(data_db);
-    console.log(data_post);
-
-    data_form.map(element =>{ // For each element in data_form
-        let row = element[0]; // Get row
-        let value = element[1]; // Get value
-        let db_value = data_db[0][row]; // Get value from database
-
-        consulta(row, value, id, 'datos_usuario', 'DU_num_documento'); // Send data to database
-    });
-
-    data_form_r.map(element =>{
-        console.log(element); // For each element in data_form
-        let row = element[0]; // Get row
-        let value = element[1]; // Get value
-        let db_value = data_db[0][row]; // Get value from database
-        if(value != ""){
-            consulta(row, value, id, 'registro', 'R_num_documento'); // Send data to database
-        }
-    })
-
+    else{
+        res.redirect('/login'); // Redirect to login page if user is not logged in
+    }
     next(); // Send data to next function
 }, (req,res, mensaje_s)=>{
     res.redirect('/dashboard'); // Redirect to dashboard page
