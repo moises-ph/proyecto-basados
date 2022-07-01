@@ -1,0 +1,40 @@
+*{
+    font-family: 'Ubuntu', sans-serif;
+    user-select: none;
+}
+
+.historia{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+}
+
+form{
+    width: 93vw;
+    height: auto;
+    border: 2px solid #000;
+    margin: 1%;
+}
+
+
+#sistemas{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+}
+
+#musculos{
+    
+    position: relative;
+    z-index: 500;
+    height: px;
+    
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.muscles{
+    position: absolute;
+    z-index: 50;
+}
