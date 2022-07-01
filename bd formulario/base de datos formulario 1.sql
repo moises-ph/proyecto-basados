@@ -1,7 +1,7 @@
-drop database if exists registro_BD;
-create database registro_BD;
+drop database if exists registro_BD2;
+create database registro_BD2;
 
-use registro_BD;
+use registro_BD2;
 
 create table registro ( R_num_documento int  primary key auto_increment not null,
 								R_nombres varchar (20) not null,
@@ -27,20 +27,18 @@ create table datos_usuario (DU_num_documento int primary key not null,
                             );
 
 create table acciones_registro(
-							AR_id int not null primary key auto_increment,
+							AR_id int primary key not null auto_increment,
                      AR_usuario varchar(40) not null,
                      AR_documento_identificacion int not null,
                      AR_accion varchar(100) not null,
-                     AR_fecha datetime not null default current_timestamp,
-                     constraint FK_registro_acciones_registro foreign key (AR_id) references registro(R_num_documento));
+                     AR_fecha datetime not null default current_timestamp);
                     
 create table acciones_datos(
 									 AD_id int not null primary key auto_increment,
                             AD_usuario varchar(40) not null,
                             AD_documento_identificacion int not null,
                             AD_accion varchar(100) not null,
-                            AD_fecha datetime not null default current_timestamp,
-                            constraint FK_acciones_datos_datos_usuarios foreign key (AD_id) references datos_usuario(DU_num_documento));
+                            AD_fecha datetime not null default current_timestamp);
 
 DELIMITER //
 create trigger log_registro_insert after insert on registro

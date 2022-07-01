@@ -82,6 +82,7 @@ router.post('/', (req, res, next) => {
     const sql_insert = "INSERT INTO registro(R_num_documento,R_nombres, R_apellidos, R_edad, R_genero, R_email, R_contraseña, R_tipo_de_usuario, R_tipo_de_documento) VALUES (?,?,?,?,?,?,?,?,?);"
     // Format query
     const query_sql = mysql.format(sql_insert, [documento, nombre, apellidos, edad, genero, email, contraseña, tipo_usuario, tipo_documento]);
+    console.log(query_sql);
 
     connection.query( search_sql,  (err, result) => { // Search user
         if (err) throw err;
