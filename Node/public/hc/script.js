@@ -2,35 +2,44 @@
 const paths= document.querySelectorAll("#sistema_oseo path");
 
 const cambiarColor=(e)=>{
+    console.log(e.target.id);
     if(e.target.getAttribute('class')=="blanco-oscuro"){
         if(e.target.getAttribute('fill')=='#B0B296'){
+
             e.target.setAttribute('fill', '#d33b27')
         }
         else{
+
             e.target.setAttribute('fill', '#B0B296')
         }
     }
     else if(e.target.getAttribute('class')=="blanco-blanco"){
         if(e.target.getAttribute('fill')=='#FFFFFF'){
+
             e.target.setAttribute('fill', '#d33b27')
         }
         else{
+
             e.target.setAttribute('fill', '#FFFFFF')
         }
     }
     else if(e.target.getAttribute('class')=="blanco-mediano"){
         if(e.target.getAttribute('fill')=='#F4EFE2'){
+
             e.target.setAttribute('fill', '#d33b27')
         }
         else{
+
             e.target.setAttribute('fill', '#F4EFE2')
         }
     }
     else{
         if(e.target.getAttribute('fill')=='#FFF9EC'){
+
             e.target.setAttribute('fill', '#d33b27')
         }
         else{
+
             e.target.setAttribute('fill', '#FFF9EC')
         }
     }

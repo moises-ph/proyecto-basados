@@ -36,6 +36,10 @@ app.use('/dashboard', require('./routers/dashboard')); // import the router for 
 
 app.use('/recovery', require('./routers/recovery')); // import the router for the recovery
 
+// HISTORIA CLINICA ROUTE
+
+app.use('/historia_clinica', require('./routers/historia_clinica')); // import the router for the historia clinica
+
 // 404 ROUTE
 app.use((req, res, next) => {
   res.status(404).render("404", {url : req.url}); // render the 404.ejs file if the url is not found
@@ -44,5 +48,5 @@ app.use((req, res, next) => {
 // SET UP SERVER
 
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+  console.log(`Server is running on port ${port}`);
 })
