@@ -3,6 +3,7 @@ const express = require('express'); // Express web server framework
 const router = express.Router(); // Express router
 const fs = require('fs'); // File system library
 const mysql = require('mysql'); // MySQL library
+const session = require('express-session'); // Express session library
 
 require('dotenv').config();// Load the .env file
 
@@ -29,21 +30,12 @@ db.getConnection((err, connection) => {
 });
 
 router.get('/', (req, res, next) => {
-    console.log('GET /recovery');
-    let data_null_tmp ={
-        'id': 0,
-        'estado': 'inactivo'
-    };
-    let data_null = JSON.stringify(data_null_tmp);
-    fs.writeFileSync('data/datos_sesion.json', data_null, (error)=>{
-        if(error){
-            console.log(error);
-        }
-        else{
-            console.log('Archivo editado a 0');
-        }
-    });
-    next();
+    if(! req.session.loggedin) {
+        console.log('GET /recovery');
+        next(); // Next function
+    }else{
+        res.redirect('/dashboard');
+    }
 }, (req,res)=>{
     res.render('recovery', {error : ''});
 }); // Get recovery page

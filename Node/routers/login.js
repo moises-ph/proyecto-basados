@@ -1,8 +1,8 @@
 // Calling libraries
 const express = require('express'); // Express web server framework
 const router = express.Router(); // Express router
-const fs = require('fs'); // File system library
 const mysql = require('mysql'); // MySQL library
+const session = require('express-session'); // Express session library
 
 require('dotenv').config();// Load the .env file
 
@@ -29,18 +29,6 @@ db.getConnection((err, connection) => {
 })
 
 router.get('/', (req, res, next) => { // Get login page
-    let data_null_tmp ={
-        'id': 0,
-        'estado': 'inactivo'
-    } // Create data to send
-    let data_null = JSON.stringify(data_null_tmp); // Parse data to JSON
-    fs.writeFileSync('data/datos_sesion.json', data_null, (error)=>{ // Write data to file
-        if(error){
-            console.log(error);
-        }
-        else{
-            console.log('Archivo editado a 0');
-        }});
     console.log('GET /login');
     next(); // Next function
 }, (req,res) => {
@@ -49,19 +37,6 @@ router.get('/', (req, res, next) => { // Get login page
 
 router.post('/', (req, res, next) => { // Post login page
     console.log('POST /login');
-    let data_null_tmp ={ // Create data to send
-    'id': 0,
-    'estado': 'inactivo'
-    }
-    let data_null = JSON.stringify(data_null_tmp); // Parse data to JSON
-    fs.writeFileSync('data/datos_sesion.json', data_null, (error)=>{ // Write data to file
-            if(error){
-                console.log(error);
-            }
-            else{
-                console.log('Archivo editado a 0');
-            }
-            });
     const id_usuario = parseInt(req.body.documento_id); // Get id from form
     const password = req.body.Contraseña; // Get password from form
 
@@ -79,22 +54,12 @@ router.post('/', (req, res, next) => { // Post login page
             console.log(resultado);
             if(resultado[0].R_contraseña == password){ // Check if password is correct
 
-                let data_temp = {
-                'id' : id_usuario,
-                'estado' : 'activo'
-                } // Create data to send (id and status are active now) 
-                let data = JSON.stringify(data_temp); // Parse data to JSON
-                fs.writeFileSync('data/datos_sesion.json', data, (error)=>{ // Write data to file
-                if(error){
-                    console.log(error);
-                }
-                else{
-                    console.log('Archivo creado');
-                }
-                });
+                req.session.loggedin = true; // Set session loggedin to true
+                req.session.usr = resultado[0].R_num_documento; // Set session id to user id
+                req.session.nombre = resultado[0].R_nombres; // Set session nombre to user nombre
 
-                res.redirect('/dashboard/'); // Redirect to dashboard 
                 console.log('Contraseña correcta, redireccionando a la pagina principal');
+                res.redirect('/dashboard'); // Redirect to dashboard
             }
             else{ // If password is incorrect
                 console.log('Contraseña incorrecta'); 
@@ -107,9 +72,12 @@ router.post('/', (req, res, next) => { // Post login page
         }
     })
     })
-}, (req,res, mensaje_s) => {
-    JSON.parse(mensaje_s);
-    res.render('login', {error : mensaje_s.error, mensaje: mensaje_s.mensaje}); // Render login page
-})
+});
+
+router.get('/out', (req,res) => {
+    req.session.loggedin = false; // Set session loggedin to false
+    req.session.destroy(); // Destroy session
+    res.redirect('/login'); // Redirect to login page
+}) // Get logout page)
 
 module.exports = router; // Export router

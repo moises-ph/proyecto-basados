@@ -30,12 +30,10 @@ form.addEventListener('submit', (e) => {
         }
     }
     else{
+        email_con.value = 'null';
+        contraseña_con.value = 'null';
+        email.value = 'null';
+        contraseña.value = 'null';
         form.submit();
     }
 });
-
-var boton_cerrar_sesion = document.getElementById('cerrar_sesion');
-
-boton_cerrar_sesion.addEventListener('click', (e) => {
-    window.location.href = '/login';
-})

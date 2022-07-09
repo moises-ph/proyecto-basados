@@ -18,6 +18,7 @@
     "ejs": "^3.1.8",
     "express": "^4.18.1",
     "express-redirect": "^1.2.2",
+    "express-session": "^1.17.3",
     "fs": "^0.0.1-security",
     "mysql": "^2.18.1",
     "redirect": "^0.2.0"

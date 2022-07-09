@@ -1,7 +1,7 @@
 <%- include('template/header', {titulo : 'Dashboard', css : '/dashboard/datos_basicos.css'}); %>
   <nav>
     <h1>Datos básicos</h1>
-    <button id="cerrar_sesion">Cerrar sesión</button>
+    <a href="/login/out"><button id="cerrar_sesion">Cerrar sesión</button></a>
   </nav>
   <form class="formulario" id="form" name="Formulario-datosbasicos-lgd" action="/dashboard" method="POST">
     <div class="reform">

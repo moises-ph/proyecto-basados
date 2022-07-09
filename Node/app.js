@@ -1,6 +1,7 @@
 //  Calling libraries
 const express = require('express'); // Express web server framework
 const bodyParser = require('body-parser'); // Parses the body of the request
+const session = require('express-session'); // Express session library
 
 // // Starting express app
 
@@ -8,6 +9,13 @@ const app = express();
 const port = 3000 || process.env.PORT;
 
 // Middleware
+
+// Setting up the session
+app.use(session({
+  secret: 'secret',
+  resave: true,
+  saveUninitialized: true
+}))
 
 app.use(bodyParser.urlencoded({extended: false}));
 

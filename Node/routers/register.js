@@ -1,8 +1,8 @@
 // Calling libraries
 const express = require('express'); // Express web server framework
 const router = express.Router(); // Express router
-const fs = require('fs'); // File system library
 const mysql = require('mysql'); // MySQL library
+const session = require('express-session'); // Express session library
 
 require('dotenv').config();// Load the .env file
 
@@ -29,37 +29,19 @@ db.getConnection((err, connection) => {  // Get connection from database
 
 
 router.get('/', (req, res, next) => { // Get register page
-    let data_null_tmp ={
-    'id': 0,
-    'estado': 'inactivo'
-    } // Create data to send to file
-    let data_null = JSON.stringify(data_null_tmp); // Parse data to JSON
-    fs.writeFileSync('data/datos_sesion.json', data_null, (error)=>{ // Write data to file
-        if(error){
-            console.log(error);
-        }
-        else{
-            console.log('Archivo editado a 0');
-        }});
-    next(); // Next function
+    if(! req.session.loggedin) {
+        console.log('GET /register');
+        next(); // Next function
+    }
+    else{
+        res.redirect('/dashboard');
+    }
 }, (req,res) => {
     res.render('registro', {error : '', mensaje: ''}); // Render register page
 }) 
 
 router.post('/', (req, res, next) => {
-    let data_null_tmp ={
-    'id': 0,
-    'estado': 'inactivo'
-    } // Create data to send to file
-    let data_null = JSON.stringify(data_null_tmp); // Parse data to JSON
-    fs.writeFileSync('data/datos_sesion.json', data_null, (error)=>{ // Write data to file
-            if(error){
-                console.log(error);
-            }
-            else{
-                console.log('Archivo editado a 0');
-            }
-            });
+    console.log('POST /register');
     console.log(req);
     const tipo_usuario = req.body.usuario; // Get type from form
     const tipo_documento = req.body.Tipo_documento; // Get type from form
