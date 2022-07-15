@@ -1,8 +1,35 @@
-<%- include('template/header', {titulo : 'index', css : ''}); %>
+<%- include('template/header', {titulo : 'index', css : '/index/index.css'}); %>
+<header>
+  <nav class="header">
+    <h1>DSYSTEM</h1>
+    <div class="links">
+      <a href="#">Beginnig</a>
+      <a href="#">services</a>
+      <a href="#">about</a>
+    </div>
+    <div class="actions">
+      <a href="/login">Sing In</a>
+      <a href="/register" id="su">Sing Up</a>
+    </div>
+  </nav>
+</header>
+<main class="content">
+  <section class="description">
+    <p>
+      DSYSTEM IS A WEBPAGE THAT ALLOWS YOU TO QUICKLY AND EFFICIENTLY MANAGE THE
+      MEDICAL RECORDS OF PATIENTS IN A HEALTH COMPANY
+    </p>
+    <div class="about">
+      <button id="ab">about</button>
+    </div>
+  </section>
+  <aside>
+    <img
+      src="/index/Logo.png"
+      class="imagen"
+      alt="logo de la paguna de Dsystem"
+    />
+  </aside>
+</main>
 
-  <h1>Bienvenido/a</h1>
-  <h2>¿Qué desea hacer?</h2>
-  <a href="/login">Logearse</a>
-  <a href="/register">Registrarse</a>
-
-<%- include('template/footer', {script : ''}); %> 
+<%- include('template/footer', {script : ''}); %>

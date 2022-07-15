@@ -1,78 +1,172 @@
-<%- include('template/header', {titulo : 'Registro', css : '/registro/style.css'}); %>
+<%- include('template/header', {titulo : 'Registro', css :
+'/registro/style.css'}); %>
 
-<div class="formulario">
+<header>
+  <nav class="header">
+    <h1>DSYSTEM</h1>
+    <div class="links">
+      <a href="#">Beginnig</a>
+      <a href="#">services</a>
+      <a href="#">about</a>
+    </div>
+    <div class="actions">
+      <a href="/login">Sing In</a>
+      <a href="/register" id="su">Sing Up</a>
+    </div>
+  </nav>
+</header>
+<main>
+  <img src="/dashboard/logo_blanco.png" alt="" srcset="" />
+  <div class="formulario">
     <div class="Registro">
       <h3>Registro de Usuario</h3>
+    </div>
+    <form
+      action="/register"
+      class="form"
+      id="formulario-registro"
+      method="POST"
+      name="Formulario"
+    >
+      <div id="col-1" class="colum">
+        <label for="Usuario">Tipo de usuario</label>
+        <select name="usuario" id="elusuario" class="select" required>
+          <option value="">Seleccione</option>
+          <option value="Paciente">Paciente</option>
+          <option value="Empleado">Empleado</option>
+        </select>
+        <label for="Tipo_documento">Tipo de documento:</label>
+        <select name="Tipo_documento" id="tipo_docu" class="select" required>
+          <option value="">Seleccione</option>
+          <option value="C.C">C.C</option>
+          <option value="Carnet diplomatico">Carnet diplomatico</option>
+          <option value="Certificado nacido vivo">
+            Certificado nacido vivo
+          </option>
+          <option value="Cedula de extranjeria">Cedula de extranjeria</option>
+          <option value="Nit">Nit</option>
+          <option value="Pasaporte">Pasaporte</option>
+          <option value="Permiso especial de permanencia">
+            Permiso especial de permanencia
+          </option>
+          <option value="Permiso de proteccion personal">
+            Permiso de proteccion personal
+          </option>
+          <option value="Registro civil">Registro civil</option>
+          <option value="Salvoconducto">Salvoconducto</option>
+          <option value="Tarjeta de identidad">Tarjeta de identidad</option>
+        </select>
+        <label for="documento">Documento de identidad:</label>
+        <input
+          name="id"
+          type="number"
+          placeholder="Numero de documento de identidad"
+          required
+          maxlength="20"
+          id="documento"
+        />
+        <label for="nombre">Nombre:</label>
+        <input
+          name="nombre"
+          type="text"
+          maxlength="45"
+          required
+          placeholder="Nombre..."
+          id="nombre"
+        />
+        <label for="apellidos">Apellidos:</label>
+        <input
+          type="text"
+          name="Apellidos"
+          required
+          id=""
+          placeholder="Apellidos..."
+          id="apellidos"
+        />
+        <label for="edad">Edad:</label>
+        <input
+          name="edad"
+          type="number"
+          minlength="1"
+          maxlength="3"
+          required
+          placeholder="Edad"
+          id="edad"
+        />
+        <label for="Genero">Genero:</label>
+        <select
+          name="Genero"
+          id="elgenero"
+          name="Genero"
+          placeholder="Genero"
+          class="select"
+          required
+        >
+          <option value="">Seleccione</option>
+          <option value="Hombre">Hombre</option>
+          <option value="Mujer">Mujer</option>
+          <option value="Otros">Otros</option>
+        </select>
+      </div>
+      <div class="colum">
+        <label for="email">Email:</label>
+        <input
+          name="email"
+          type="email"
+          required
+          placeholder="Email"
+          onchange="guardar_email_org(this)"
+          id="email"
+        />
+        <label for="con_email">Confirmar email:</label>
+        <input
+          type="text"
+          type="email"
+          required
+          placeholder="Confirmar"
+          onchange="guardar_email_con(this)"
+          id="con_email"
+        />
+        <label for="contraseña">Contraseña</label>
+        <input
+          name="password"
+          type="password"
+          onchange="guardar_pssword_org(this)"
+          required
+          id="contraseña_org"
+        />
+        <label for="con_contraseña">Confirmar contraseña</label>
+        <input
+          type="password"
+          onchange="guardar_pssword_con(this)"
+          required
+          id="confirmacion_contraseña"
+        />
+        <div class="send">
+        <input type="submit" id="submit" class="enviar" />
+        <a class="ingreso" href="/login"
+          >Ya te registraste? Inicia sesión aquí</a>
+        </div>
+      </div>
+    </form>
   </div>
-  <form action="/register" class="form" id="formulario-registro" method="POST" name="Formulario">
-    <label for="Usuario">Tipo de usuario</label>
-    <select name="usuario" id="elusuario" class="select" required>
-      <option value="">Seleccione</option>
-      <option value="Paciente">Paciente</option>
-      <option value="Empleado">Empleado</option>
-    </select>
-    <label for="Tipo_documento">Tipo de documento:</label>
-    <select name="Tipo_documento" id="tipo_docu" class="select" required>
-      <option value="">Seleccione</option>
-      <option value="C.C">C.C</option>
-      <option value="Carnet diplomatico">Carnet diplomatico</option>
-      <option value="Certificado nacido vivo">Certificado nacido vivo</option>
-      <option value="Cedula de extranjeria">Cedula de extranjeria</option>
-      <option value="Nit">Nit</option>
-      <option value="Pasaporte">Pasaporte</option>
-      <option value="Permiso especial de permanencia">Permiso especial de permanencia</option>
-      <option value="Permiso de proteccion personal">Permiso de proteccion personal</option>
-      <option value="Registro civil">Registro civil</option>
-      <option value="Salvoconducto">Salvoconducto</option>
-      <option value="Tarjeta de identidad">Tarjeta de identidad</option>
-    </select>
-    <label for="documento">Documento de identidad:</label>
-    <input name="id" type="number" placeholder="Numero de documento de identidad" required maxlength="20" id="documento">
-    <label for="nombre">Nombre:</label>
-    <input name="nombre" type="text" maxlength="45" required placeholder="Nombre..." id="nombre">
-    <label for="apellidos">Apellidos:</label>
-    <input type="text" name="Apellidos" required id="" placeholder="Apellidos..." id="apellidos">
-    <label for="edad">Edad:</label>
-    <input name="edad" type="number" minlength="1" maxlength="3" required placeholder="Edad" id="edad">
-    <label for="Genero">Genero:</label>
-    <select name="Genero" id="elgenero" name="Genero" placeholder="Genero" class="select" required> 
-      <option value="">Seleccione</option>
-      <option value="Hombre">Hombre</option>
-      <option value="Mujer">Mujer</option>
-      <option value="Otros">Otros</option>
-    </select>
-    <label for="email">Email:</label>
-    <input name="email" type="email" required placeholder="Email" onchange="guardar_email_org(this)" id="email">
-    <label for="con_email">Confirmar email:</label>
-    <input type="text" type="email" required placeholder="Confirmar" onchange="guardar_email_con(this)" id="con_email">
-    <label for="contraseña">Contraseña</label>
-    <input name="password" type="password" onchange="guardar_pssword_org(this)" required id="contraseña_org">
-    <label for="con_contraseña">Confirmar contraseña</label>
-    <input type="password" onchange="guardar_pssword_con(this)" required id="confirmacion_contraseña">
-    <input type="submit" id="submit" class="enviar">
-    <a class="ingreso" href="/login">Ya te registraste? Inicia sesión aquí</a>
-  </form>
-  
-</div>
+</main>
+
 <div id="error"><%= error %></div>
 <div id="mensaje"><%= mensaje %></div>
-  <% if (error == '' && mensaje == '') { %>
-    <script>
-      document.getElementById("error").style.display = "none";
-      document.getElementById("mensaje").style.display = "none";
-    </script>
-  <% } %>
-  <% if (error != '') { %>
-    <script>
-      document.getElementById("error").style.display = "block";
-      document.getElementById("mensaje").style.display = "none";
-    </script>
-  <% } %>
-  <% if (mensaje != '') { %>
-    <script>
-      document.getElementById("error").style.display = "none";
-      document.getElementById("mensaje").style.display = "block";
-    </script>
-  <% } %>
-
-<%- include('template/footer', {script : '/registro/registro_sc.js'}) %>
+<% if (error == '' && mensaje == '') { %>
+<script>
+  document.getElementById("error").style.display = "none";
+  document.getElementById("mensaje").style.display = "none";
+</script>
+<% } %> <% if (error != '') { %>
+<script>
+  document.getElementById("error").style.display = "block";
+  document.getElementById("mensaje").style.display = "none";
+</script>
+<% } %> <% if (mensaje != '') { %>
+<script>
+  document.getElementById("error").style.display = "none";
+  document.getElementById("mensaje").style.display = "block";
+</script>
+<% } %> <%- include('template/footer', {script : '/registro/registro_sc.js'}) %>

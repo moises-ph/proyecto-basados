@@ -1,117 +1,168 @@
-*{
-    font-family: 'Noto Sans', sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Ubuntu&display=swap');
+
+* {
+    font-family: 'Montserrat', sans-serif;
     user-select: none;
 }
 
-body{
-    background-image: url("/registro/LLUVIA.jpg");
-    background-size: auto;
-    height: 100%;
-    background-repeat:no-repeat;
+body {
+    background-color: black;
+}
+
+main {
     display: flex;
-    justify-content: center;
+    flex-direction: row;
 }
 
-.formulario{
-    width: 50vw;
-    height: 85%;
-    border-radius: 20px;
-    padding-right: 10px;
-    margin-top: 2%;
-    display: grid;
-    grid-template-columns: repeat(2, 0.9fr);
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    background-color: #C1C7C4;
-    box-shadow: 4px 4px 4px 4px rgba(44, 44, 44, 0.719);
-}
-
-.select{
-    border: none;
-    color: white;
-    background-color: #6A33A1;
-    width: 100%;
-    border-radius: 5px;
-    outline: none;
-}
-
-.Registro{
-    margin-right: 15px;
-    border-radius: 20px;
-    width: 100%;
-    height: 100%;
+nav {
     display: flex;
+    flex-direction: row;
+    justify-content: space-around;
     align-items: center;
-    justify-content: center;
-    background-image: linear-gradient( to bottom,#7346C5, #2F2163 );
+    margin-bottom: 3%;
 }
 
-.ingreso{
-    margin-top: 10px;
-    border-radius: 2px;
-    color: #fff;
-    background-image: linear-gradient( to bottom,#7346C5, #2F2163 );
-    font-size: 0.9rem;
-    padding: 3px;
-    margin-bottom: 5px;
-    text-decoration: none;
-}
-
-.ingreso:hover{
-    background-image: linear-gradient( to bottom,#641de7, #170d3d );
-}
-
-h3{
-    color: white; 
-}
-
-.form{
-    width: 50%;
-    height: 100%;
-    display: grid;
-    grid-row:span;
-    justify-self: center;
-
-}
-
-label{
-    margin-top: 5px;
-}
-
-input{
-    white-space: nowrap;      
-    overflow: hidden; 
-    margin-top: 8px;
-    background-color: #C1C7C4;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-bottom: 2px solid #9ca09ec4;
-    outline: none;
-}
-
-input:valid{
-    border-bottom: 2px solid rgb(50, 194, 50);
-}
-
-input:invalid{
-    border-bottom: 2px solid rgba(207, 39, 39, 0.932);
-}
-
-.enviar{
-    border: none;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    color: white;
+h1 {
     font-weight: 800;
-    background-color: #212243;
+    color: white;
 }
 
-.enviar:hover{
-    background-color: #15152c;
+a {
+    text-decoration: none;
+    color: white;
 }
 
-.error{
-    visibility: hidden;
+.links {
+    font-size: 1.2rem;
+    font-weight: 800;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.actions {
+    font-size: 1.2rem;
+    font-weight: 800;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.formulario {
+    background-color: white;
+    color: black;
+    border-radius: 30px;
+    padding-left: 4%;
+    height: 70vh;
+}
+
+#su {
+    background-color: white;
+    color: black;
+    height: 4vh;
+    border-radius: 15px;
+    width: 30%;
+    text-align: center;
+}
+
+.send {
+    width: 50%;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+
+#submit {
+    background-color: transparent;
+    border: 3px solid black;
+    font-size: 1.5rem;
+    font-weight: 800;
+    height: 20%;
+    width: 100%;
+    color: black;
+}
+
+.ingreso {
+    color: black;
+    text-align: center;
+}
+
+label {
+    font-weight: 800;
+    font-size: 1.1rem;
+}
+
+input {
+    margin-bottom: 4%;
+    width: 70%;
+    border: 2px rgba(144, 142, 142, 0.845) solid;
+    color: rgba(144, 142, 142, 0.845);
+}
+
+#col-1 *{
+    margin-right: 10%;
+}
+
+select {
+    margin-bottom: 4%;
+    width: 72%;
+    border: 2px rgba(144, 142, 142, 0.845) solid;
+    color: rgba(144, 142, 142, 0.845);
+}
+
+h3 {
+    text-align: center;
+}
+
+img {
+    height: 40%;
+    width: 40%;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 2fr 2fr;
+    width: 50vw;
+    height: 70vh;
+}
+
+.colum {
+    display: flex;
+    flex-direction: column;
+}
+
+#error {
+    display: none;
+}
+
+#mensaje {
+    display: none;
+}
+
+@media screen and (orientation: portrait) {
+    .links {
+        display: none;
+    }
+    #su {
+        width: 30vw;
+    }
+    main {
+        display: flex;
+        flex-direction: column;
+    }
+    img {
+        width: 100%;
+        height: 100%;
+    }
+    form {
+        width: 100%;
+    }
+    #submit {
+        width: 30vw;
+    }
 }

@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Ubuntu&display=swap');
+
+* {
+    font-family: 'Montserrat', sans-serif;
+    text-decoration: none;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    background-color: black;
+    color: white;
+}
+
+a {
+    color: white;
+    margin-right: 10px;
+}
+
+.actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.imagen {
+    width: 40vw;
+    height: 55vh;
+    border-radius: 50%;
+}
+
+.content .description p {
+    font-size: 1.8rem;
+    font-weight: 800;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+}
+
+.link {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.content {
+    margin-top: 5%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    text-align: justify;
+    width: 100%;
+}
+
+.about {
+    width: 10px;
+    padding-left: 20%;
+}
+
+a {
+    font-size: 1.7rem;
+}
+
+#su {
+    color: black;
+    background-color: white;
+    height: 5.5vh;
+    font-size: 1.4rem;
+    text-align: center;
+    width: 10vw;
+    border-radius: 30px;
+    font-weight: 700;
+}
+
+#ab {
+    width: 15vw;
+    height: 6vh;
+    border-radius: 30px;
+    font-weight: 700;
+}
+
+.description {
+    width: 30%;
+}
+
+@media screen and (orientation: portrait){
+    .links {
+        display: none;
+    }
+
+    .actions {
+        width: 50vw;
+    }
+
+    #su {
+        width: 20vw;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column-reverse;
+        width: 100%;
+    }
+
+    .imagen {
+        width: 98vw;
+        height: 40vh;
+    }
+
+    .content .description p {
+        width: 95vw;
+        text-align: justify;
+        padding: 3%;
+    }
+
+    .about {
+        width: 93vw;
+        display: flex;
+        justify-content: center;
+    }
+
+    #ab {
+        width: 30vw;
+    }
+}

@@ -1,93 +1,179 @@
-*{
-  font-family: 'Noto Sans', sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Ubuntu&display=swap');
+
+* {
+  font-family: 'Montserrat', sans-serif;
   user-select: none;
 }
 
-.error{
-  visibility: hidden;
+body {
+  background-color: black;
 }
 
-body{
-  background-image: url("/login/LLUVIA.jpg");
-  background-size: auto;
-  height: 100%;
-  background-repeat:no-repeat;
+nav {
   display: flex;
-  justify-content: center;
-}
-
-.formulario{
-  width: 50vw;
-  height: 80vh;
-  border-radius: 20px;
-  padding-right: 10px;
-  margin-top: 2%;
-  display: grid;
-  grid-template-columns: repeat(2, 0.9fr);
-  text-align: center;
+  flex-direction: row;
+  justify-content: space-around;
   align-items: center;
-  justify-content: center;
-  background-color: #C1C7C4;
-  box-shadow: 4px 4px 4px 4px rgba(44, 44, 44, 0.719);
+  margin-bottom: 3%;
 }
 
-.input{
-  outline: none;
-  background-color: #C1C7C4;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  width: 80%;
-}
-
-.submit{
-  margin-bottom: 5px;
-  color: white;
+h1 {
   font-weight: 800;
-  background-color: #212243;
+  color: white;
 }
 
-.submit:hover{
-  background-color: #15152c;
+a {
+  text-decoration: none;
+  color: white;
 }
 
-.link{
-  margin-top: 10px;
-    border-radius: 2px;
-    color: #fff;
-    background-image: linear-gradient( to bottom,#7346C5, #2F2163 );
-    font-size: 0.9rem;
-    padding: 3px;
-    margin-bottom: 5px;
-    text-decoration: none;
-
-}
-.link:hover{
-  background-image: linear-gradient( to bottom,#641de7, #170d3d );
+header {
+  margin-bottom: 6%;
 }
 
-.form{
-  width: 80%;
-  height: 75%;
+.links {
+  font-size: 1.2rem;
+  font-weight: 800;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.actions {
+  font-size: 1.2rem;
+  font-weight: 800;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+#su {
+  background-color: white;
+  width: 15vw;
+  height: 4vh;
+  text-align: center;
+  border-radius: 15px;
+  color: black;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.titulo {
+  width: 100%;
+}
+
+h2 {
+  width: 100%;
+  text-align: center;
+  color: black;
+}
+
+.formulario {
+  margin-left: 10%;
+  background-color: white;
+  width: 23vw;
+  height: 60vh;
+  border-radius: 30px;
+}
+
+img {
+  width: 45vw;
+  height: 60vh;
+}
+
+.form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
-  justify-self: center;
-  text-align: center;
 }
 
-#cabecera{
-  color: white;
-  margin-right: 15px;
-  border-radius: 20px;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-image: linear-gradient( to bottom,#7346C5, #2F2163 ); 
+label {
+  font-size: 1.2rem;
+  margin-bottom: 5%;
 }
-.no_registrado{
-  padding: 20px;
+
+input {
+  width: 80%;
+  margin-bottom: 5%;
+  height: 4vh;
+  border: 3px solid rgba(145, 144, 144, 0.918);
+  color: rgb(117, 113, 113);
+}
+
+#submit {
+  height: 5vh;
+  width: 40%;
+  background-color: transparent;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: black;
+  border: 3px solid black;
+}
+
+#submit:hover {
+  animation: back 1s linear;
+  background-color: black;
+  color: white;
+}
+
+@keyframes back {
+  0% {
+    background-color: transparent;
+  }
+
+  50% {
+    background-color: black;
+  }
+
+  100% {
+    background-color: black;
+    color: white;
+  }
+}
+
+.link {
+  color: black;
+}
+
+@media screen and (orientation: portrait) {
+  
+  .links {
+    display: none;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  nav {
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+  main {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 75vh;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  img {
+    width: 90vw;
+    height: 30vh;
+  }
+  .formulario {
+    width: 70vw;
+    margin-left: 0;
+  }
+  #su {
+    width: 30vw;
+  } 
 }
