@@ -119,8 +119,9 @@ h1 {
 
 img {
   background: transparent;
-  width:10vw;
-  height:12vh;
+  width: 8%;
+  height: 8%;
+  margin: 1% 1% 1% 1%;
 }
 
 span {
