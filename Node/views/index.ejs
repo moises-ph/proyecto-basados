@@ -1,14 +1,16 @@
-<%- include('template/header', {titulo : 'index', css : '/index/index.css'}); %>
+<%- include('template/header', {titulo : 'DB System', css : '/index/index.css'}); %>
 <header>
   <nav class="header">
-    <h1>DSYSTEM</h1>
-    <div class="links">
-      <a href="#">Beginnig</a>
-      <a href="#">services</a>
-      <a href="#">about</a>
+    <div class="nav-left">
+      <h1>DSYSTEM</h1>
+      <div class="links">
+        <a href="#">Beginnig</a>
+        <a href="#">services</a>
+        <a href="#">about</a>
+      </div>
     </div>
     <div class="actions">
-      <a href="/login">Sing In</a>
+      <a href="/login" id="si">Sing In</a>
       <a href="/register" id="su">Sing Up</a>
     </div>
   </nav>
@@ -20,7 +22,7 @@
       MEDICAL RECORDS OF PATIENTS IN A HEALTH COMPANY
     </p>
     <div class="about">
-      <button id="ab">about</button>
+      <a id="ab" href="#">About</a>
     </div>
   </section>
   <aside>

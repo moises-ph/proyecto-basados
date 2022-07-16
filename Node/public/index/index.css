@@ -16,17 +16,25 @@ body {
 a {
     color: white;
     margin-right: 10px;
+    text-decoration: none;
+}
+
+.nav-left{
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    width: 50%;
 }
 
 .actions {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 .imagen {
-    width: 40vw;
-    height: 55vh;
     border-radius: 50%;
 }
 
@@ -39,17 +47,29 @@ a {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
+    font-size: 1rem;
 }
 
-.header h1 {
-    font-size: 2.5rem;
+.header .nav-left h1 {
+    margin-left: 3%;
+    margin-right: 3%;
+    font-size: 2.25rem;
 }
 
-.link {
+.header .nav-left a{
+    font-size: 1.25rem;
+    transition: 0.1s;
+}
+
+.links{
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+
+.links a:hover{
+    border-bottom: 2px solid white;
 }
 
 .content {
@@ -61,35 +81,61 @@ a {
     width: 100%;
 }
 
-.about {
-    width: 10px;
-    padding-left: 20%;
-}
 
 a {
     font-size: 1.7rem;
 }
 
+
 #su {
+    background-color: white;
+    color: black;
+    text-align: center;
+    padding: 4px 4px 4px 4px;
+    border-radius: 8px;
+    transition: 0.25s;
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+#su:hover{
+    font-size: 1.75rem;
+    color: white;
+    background-color: black;
+}
+
+#si{
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 4px 4px 4px 4px;
+    border-radius: 5px;
+    transition: 0.25s;
+    font-weight: 700;
+    font-size: 1.25em;
+}
+
+#si:hover{
+    font-size: 1.75rem;
     color: black;
     background-color: white;
-    height: 5.5vh;
-    font-size: 1.4rem;
-    text-align: center;
-    width: 10vw;
-    border-radius: 30px;
-    font-weight: 700;
 }
 
 #ab {
-    width: 15vw;
-    height: 6vh;
     border-radius: 30px;
     font-weight: 700;
+    background-color: white;
+    color: black;
+    padding: 4px 4px 4px 4px;
+    text-align: center;
 }
 
 .description {
     width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 @media screen and (orientation: portrait){

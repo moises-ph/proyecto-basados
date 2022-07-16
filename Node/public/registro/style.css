@@ -119,9 +119,11 @@ h3 {
     text-align: center;
 }
 
-img {
-    height: 40%;
-    width: 40%;
+img{
+    width: 35%;
+    height: 35%;
+    margin-right: 2%;
+    margin-left: 2%;
 }
 
 form {
