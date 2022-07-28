@@ -2,6 +2,7 @@
 const express = require('express'); // Express web server framework
 const bodyParser = require('body-parser'); // Parses the body of the request
 const session = require('express-session'); // Express session library
+const cors = require('cors');
 
 // // Starting express app
 
@@ -16,6 +17,8 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 }))
+
+app.use(cors());
 
 app.use(bodyParser.urlencoded({extended: false}));
 

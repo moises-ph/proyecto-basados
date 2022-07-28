@@ -32,6 +32,7 @@ router.get('/', (req, res, next) => { // Get login page
     console.log('GET /login');
     next(); // Next function
 }, (req,res) => {
+    console.log('Render login sin nada');
     res.render('login', {error : '', mensaje: ''}); // Render login page
 })
 

@@ -53,26 +53,27 @@ router.post('/', async (req,res)=>{
         if (err) throw err;
         connection.query(query, (err, rows) => {
             if (err) throw err;
+            console.log(rows + ' ' + id);
             if(rows.length > 0){
                 console.log('Usuario encontrado');
                 exists(true);
             }
             else{
                 console.log('Usuario no encontrado');
-                res.render('recovery', {error : 'El usuario no existe'});
+                res.json({status: 'Usuario no encontrado'})
                 exists(false);
             }
         })
     })});
     if(usr){
         var sql_2 = 'UPDATE registro SET R_contraseña = ? WHERE R_num_documento = ?';
-        var query_2 = mysql.format(sql_2, [contraseña, id]);
+        var query_2 = mysql.format(sql_2, [contraseña[0], id]);
         db.getConnection((err, connection) => {
             if (err) throw err;
             connection.query(query_2, (err, rows) => {
                 if (err) throw err;
                 console.log('Contraseña actualizada');
-                res.redirect('/login');
+                res.json({status: 'Usuario cambiado correctamente'});
             })
         })
     }

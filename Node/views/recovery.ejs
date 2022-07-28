@@ -1,19 +1,65 @@
-<%- include('template/header', {titulo : 'Recupeara tu contraseña', css : '/recovery/recovery.css'}); %>
+<%- include('template/header', {titulo : 'Recupeara tu contraseña', css : '/login/login.css'}); %>
 
-<div class="formulario">
-    <h2 id="cabecera">Recupera tu contraseña</h2>
-    <form name="recovery" method="post" action="/recovery" class="form" id="recovery-form">
+<header>
+    <nav class="header">
+      <h1>DSYSTEM</h1>
+      <div class="links">
+        <a href="#">Beginnig</a>
+        <a href="#">services</a>
+        <a href="#">about</a>
+      </div>
+      <div class="actions">
+        <a href="/login">Sign In</a>
+        <a href="/register" id="su">Sign Up</a>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <div class="formulario">
+      <div class="titulo"><h2>Recupera tu Contraseña</h2></div>
+      <form id="recovery-form" name="recovery" method="post" class="form">
+        <!-- username -->
         <label for="documento_id">Documento de identidad</label>
-        <input class='input' id="Usuario_login" class="input" type="text" name="documento_id" placeholder="Ingrese su documento de identidad " required>
+        <input
+          id="Usuario_login"
+          class="input"
+          type="text"
+          name="documento_id"
+          placeholder="Ingrese su documento de identidad "
+          required
+        />
+  
+        <!-- password -->
         <label for="Contraseña">Contraseña</label>
-        <input class='input' id="Contraseña_login" class="input" type="password" name="Contraseña" placeholder="Ingrese su Contraseña" required>
-        <label for="contraseña_con"c>Confirma la contraseña</label>
-        <input class='input' id="contraseña_con" class="input" type="password" name="contraseña-con" placeholder="Confirme su Contraseña" required>
-        <input type="submit" id="submit" value="Enviar" class="submit" >
-        <a href="/login" class="link">Volver al Login</a>
-        <div id="error"> <%= error %>  </div>
-    </form>
-</div>
+        <input
+          id="Contraseña_login"
+          class="input"
+          type="password"
+          name="Contraseña"
+          placeholder="Ingrese su Contraseña"
+          required
+        />
+
+        <!-- password -->
+        <label for="Contraseña">Confirma la Contraseña</label>
+        <input
+          id="contraseña_con"
+          class="input"
+          type="password"
+          name="Contraseña"
+          placeholder="Confirme su Contraseña"
+          required
+        />
+  
+        <!-- Recuperar -->
+        <input type="submit" id="submit" value="Enviar" class="submit" />
+        <div id="error"><%= error %></div>
+  
+      </form>
+    </div>
+    <img src="/dashboard/logo_blanco.png" alt="" />
+  </main>
+  
 
 <% if (error == '') { %>
     <script>
